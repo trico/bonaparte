@@ -1,0 +1,730 @@
+<title>Las campañas de Napoleón</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<style>
+/* Mapa de estado mayor a la izquierda, cuaderno de campaña a la derecha; en el móvil, uno encima del otro. */
+:root {
+  --fondo: #f4f5f1;
+  --panel: #fbfbf8;
+  --tinta: #1d2430;
+  --tenue: #5b6372;
+  --linea: #d5d8cf;
+  --mar: #d6e2e6;
+  --tierra: #eeeee6;
+  --costa: #8a999d;
+  --frontera: #b2b6a6;
+  --rio: #86afc2;
+  --ruta: #1e3a8f;
+  --ruta-futura: #8e9bc4;
+  --victoria: #1e3a8f;
+  --derrota: #b0281f;
+  --indecisa: #9a7424;
+  --halo: #f2f3ee;
+  --rotulo-pais: #8f9384;
+  --rotulo-mar: #6f8e9a;
+  --sombra: 0 1px 2px rgba(29, 36, 48, .08), 0 4px 16px rgba(29, 36, 48, .08);
+  --display: "IM Fell English SC", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --texto: "Alegreya Sans", "Gill Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #111922; --panel: #16202b; --tinta: #e6e9ee; --tenue: #9ba4b3; --linea: #2a3542;
+    --mar: #0c141d; --tierra: #1b2531; --costa: #4b5d6e; --frontera: #3a4757; --rio: #2c5970;
+    --ruta: #e8bb4f; --ruta-futura: #7d6a3e; --victoria: #e8bb4f; --derrota: #ff7466; --indecisa: #a8b9cc;
+    --halo: #111922; --rotulo-pais: #6d7888; --rotulo-mar: #4f7487;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fondo: #111922; --panel: #16202b; --tinta: #e6e9ee; --tenue: #9ba4b3; --linea: #2a3542;
+  --mar: #0c141d; --tierra: #1b2531; --costa: #4b5d6e; --frontera: #3a4757; --rio: #2c5970;
+  --ruta: #e8bb4f; --ruta-futura: #7d6a3e; --victoria: #e8bb4f; --derrota: #ff7466; --indecisa: #a8b9cc;
+  --halo: #111922; --rotulo-pais: #6d7888; --rotulo-mar: #4f7487;
+  --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+html, body { height: 100%; }
+body { margin: 0; background: var(--fondo); color: var(--tinta); font: 16px/1.5 var(--texto); }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--ruta); outline-offset: 2px; }
+
+.app {
+  box-sizing: border-box; height: 100%; max-width: 1680px; margin: 0 auto;
+  display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: 12px;
+  padding-inline: 16px; padding-block: 14px 16px;
+}
+
+/* Cabecera */
+.cabecera { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; }
+.cabecera h1 { margin: 0; font: 400 clamp(26px, 3.2vw, 34px)/1.05 var(--display); letter-spacing: .01em; text-wrap: balance; }
+.cabecera p { margin: 2px 0 0; color: var(--tenue); font-size: 15px; }
+.buscador { position: relative; width: min(340px, 100%); }
+.buscador input {
+  box-sizing: border-box; width: 100%; padding: 8px 12px 8px 34px; border: 1px solid var(--linea);
+  border-radius: 8px; background: var(--panel);
+}
+.buscador svg { position: absolute; left: 11px; top: 50%; translate: 0 -50%; width: 16px; height: 16px; stroke: var(--tenue); fill: none; stroke-width: 2; pointer-events: none; }
+.resultados {
+  position: absolute; z-index: 20; top: calc(100% + 4px); left: 0; right: 0; margin: 0; padding: 4px;
+  list-style: none; background: var(--panel); border: 1px solid var(--linea); border-radius: 8px; box-shadow: var(--sombra);
+  max-height: 320px; overflow: auto;
+}
+.resultados button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 6px 8px; border-radius: 6px; }
+.resultados button:hover, .resultados button[aria-selected="true"] { background: var(--fondo); }
+.resultados small { display: block; color: var(--tenue); font-size: 13px; }
+.resultados .vacio { padding: 8px; color: var(--tenue); font-size: 14px; }
+
+/* Cronología de campañas */
+.campanas { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+.campanas button {
+  flex: none; display: grid; gap: 0; text-align: left; padding: 5px 11px 6px; border-radius: 8px;
+  border: 1px solid var(--linea); background: var(--panel); line-height: 1.2;
+}
+.campanas button small { color: var(--tenue); font-size: 12px; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.campanas button span { font-size: 14px; font-weight: 500; white-space: nowrap; }
+.campanas button:hover { border-color: var(--ruta-futura); }
+.campanas button[aria-pressed="true"] { background: var(--ruta); border-color: var(--ruta); color: var(--panel); }
+.campanas button[aria-pressed="true"] small { color: inherit; opacity: .8; }
+
+/* Cuerpo */
+.cuerpo { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 16px; min-height: 0; }
+.mapa { position: relative; min-height: 0; border: 1px solid var(--linea); border-radius: 10px; overflow: hidden; background: var(--mar); }
+#mapa { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+#mapa.arrastrando { cursor: grabbing; }
+.tierra { fill: var(--tierra); }
+.costa { fill: none; stroke: var(--costa); stroke-width: .8; vector-effect: non-scaling-stroke; }
+.fronteras { fill: none; stroke: var(--frontera); stroke-width: .8; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.rios { fill: none; stroke: var(--rio); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+
+.r-pais { fill: var(--rotulo-pais); font: 13px var(--display); letter-spacing: .14em; text-anchor: middle; }
+.r-mar { fill: var(--rotulo-mar); font: italic 13px var(--texto); letter-spacing: .08em; text-anchor: middle; }
+.r-parada { fill: var(--tinta); font: 500 13px var(--texto); paint-order: stroke; stroke: var(--halo); stroke-width: 3.5px; stroke-linejoin: round; }
+.r-parada.actual { font-size: 15px; font-weight: 700; }
+.r-parada.futura { fill: var(--tenue); font-weight: 400; }
+.r-parada.sin { font-style: italic; }
+
+.tramo { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.tramo.hecho { stroke: var(--ruta); }
+.tramo.futuro { stroke: var(--ruta-futura); stroke-dasharray: 5 6; }
+.tramo.mar.hecho { stroke-dasharray: 1 7; }
+.tramo.todas { stroke: var(--ruta); opacity: .5; cursor: pointer; }
+.tramo.todas:hover, .tramo.todas.encima { opacity: 1; }
+.tramo-toque { fill: none; stroke: transparent; stroke-width: 16; cursor: pointer; }
+.flecha { fill: var(--ruta); }
+
+.marca { cursor: pointer; }
+.marca .forma { stroke: var(--halo); stroke-width: 1.5; }
+.marca.v .forma { fill: var(--victoria); }
+.marca.d .forma { fill: var(--derrota); }
+.marca.i .forma { fill: var(--indecisa); }
+.marca.n .forma { fill: var(--panel); stroke: var(--tinta); }
+.marca.sin .forma { fill: var(--panel); stroke-dasharray: 2 2; stroke-width: 1.5; }
+.marca.sin.v .forma { stroke: var(--victoria); }
+.marca.sin.d .forma { stroke: var(--derrota); }
+.marca.sin.i .forma, .marca.sin.n .forma { stroke: var(--tenue); }
+.marca.futura { opacity: .5; }
+.anillo { fill: none; stroke: var(--ruta); stroke-width: 2; }
+.emperador circle { fill: var(--ruta); stroke: var(--halo); stroke-width: 2.5; }
+.emperador text { fill: var(--panel); font: 15px var(--display); text-anchor: middle; dominant-baseline: central; }
+.pulso { fill: none; stroke: var(--ruta); stroke-width: 2; animation: pulso 2.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes pulso { from { opacity: .7; transform: scale(1); } to { opacity: 0; transform: scale(2.4); } }
+
+.zoom { position: absolute; top: 10px; right: 10px; display: grid; gap: 4px; }
+.zoom button {
+  width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--linea); border-radius: 8px;
+  background: var(--panel); box-shadow: var(--sombra); font-size: 19px; line-height: 1; padding: 0;
+}
+.zoom svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+.ayuda {
+  position: absolute; left: 10px; bottom: 10px; margin: 0; padding: 3px 8px; border-radius: 6px;
+  background: color-mix(in srgb, var(--panel) 85%, transparent); color: var(--tenue); font-size: 12.5px; pointer-events: none;
+}
+.globo {
+  position: absolute; z-index: 5; pointer-events: none; padding: 4px 9px; border-radius: 6px; font-size: 14px;
+  background: var(--panel); border: 1px solid var(--linea); box-shadow: var(--sombra); white-space: nowrap;
+}
+.globo small { color: var(--tenue); margin-left: 6px; }
+
+/* Panel */
+.panel { display: flex; flex-direction: column; gap: 14px; min-height: 0; overflow: hidden; }
+.volver { align-self: flex-start; border: 0; background: none; padding: 0; color: var(--tenue); font-size: 14px; }
+.volver:hover { color: var(--tinta); }
+.campana-cab h2 { margin: 0; font: 400 26px/1.1 var(--display); text-wrap: balance; }
+.campana-cab .anos { color: var(--tenue); font-size: 14px; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.campana-cab p { margin: 6px 0 0; color: var(--tenue); font-size: 15px; }
+
+.tarjeta { padding: 14px 16px 16px; border-radius: 10px; background: var(--panel); border: 1px solid var(--linea); box-shadow: var(--sombra); }
+.tarjeta h3 { margin: 0; font: 400 24px/1.15 var(--display); text-wrap: balance; }
+.tarjeta .hoy { margin: 4px 0 0; font-size: 15px; }
+.tarjeta .hoy b { font-weight: 500; color: var(--tenue); text-transform: uppercase; font-size: 11.5px; letter-spacing: .1em; margin-right: 6px; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 8px; }
+.fecha { font-weight: 700; font-variant-numeric: tabular-nums; }
+.insignia { font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; color: var(--tenue); }
+.insignia.v { color: var(--victoria); }
+.insignia.d { color: var(--derrota); }
+.insignia.i { color: var(--indecisa); }
+.insignia.sin { border-style: dashed; }
+.tarjeta .texto { margin: 10px 0 0; }
+
+.controles { display: flex; align-items: center; gap: 8px; }
+.controles button {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 8px;
+  border: 1px solid var(--linea); background: var(--panel);
+}
+.controles button:disabled { opacity: .4; cursor: default; }
+.controles .reproducir { background: var(--ruta); border-color: var(--ruta); color: var(--panel); }
+.controles svg { width: 14px; height: 14px; fill: currentColor; }
+.contador { margin-left: auto; color: var(--tenue); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+.lista { list-style: none; margin: 0; padding: 0; overflow: auto; min-height: 0; flex: 1 1 auto; border-top: 1px solid var(--linea); }
+.lista button {
+  display: grid; grid-template-columns: 14px 104px minmax(0, 1fr); align-items: baseline; gap: 10px; width: 100%;
+  padding: 6px 8px; border: 0; border-bottom: 1px solid var(--linea); background: none; text-align: left; font-size: 15px;
+}
+.lista button:hover { background: var(--panel); }
+.lista button[aria-current="step"] { background: var(--panel); box-shadow: inset 3px 0 0 var(--ruta); font-weight: 700; }
+.lista .f { color: var(--tenue); font-size: 13px; font-variant-numeric: tabular-nums; }
+.lista .sin { font-style: italic; color: var(--tenue); }
+.lista .punto { width: 9px; height: 9px; border-radius: 50%; translate: 0 -1px; background: var(--panel); border: 1.5px solid var(--tinta); box-sizing: border-box; }
+.lista .punto.v { background: var(--victoria); border-color: var(--victoria); }
+.lista .punto.d { background: var(--derrota); border-color: var(--derrota); }
+.lista .punto.i { background: var(--indecisa); border-color: var(--indecisa); }
+.lista .punto.sin { background: var(--panel); border-style: dashed; }
+
+.indice { list-style: none; margin: 0; padding: 0; overflow: auto; min-height: 0; flex: 1 1 auto; border-top: 1px solid var(--linea); }
+.indice button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--linea); background: none; padding: 10px 8px; }
+.indice button:hover { background: var(--panel); }
+.indice .anos { color: var(--tenue); font-size: 13px; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.indice strong { display: block; font: 400 20px/1.2 var(--display); }
+.indice p { margin: 2px 0 0; color: var(--tenue); font-size: 14.5px; }
+.intro { margin: 0; color: var(--tenue); }
+
+.leyenda { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--tenue); border-top: 1px solid var(--linea); padding-top: 10px; }
+.leyenda span { display: inline-flex; align-items: center; gap: 5px; }
+.leyenda svg { width: 22px; height: 14px; overflow: visible; }
+.leyenda .nota { flex-basis: 100%; }
+
+@media (max-width: 880px) {
+  html, body { height: auto; }
+  .app { height: auto; grid-template-rows: none; }
+  .cuerpo { grid-template-columns: minmax(0, 1fr); }
+  .mapa { height: 58vh; height: 58svh; min-height: 300px; }
+  .panel { overflow: visible; }
+  .lista, .indice { max-height: none; overflow: visible; }
+  .lista button { grid-template-columns: 14px 92px minmax(0, 1fr); }
+}
+@media (max-width: 440px) {
+  .controles .etq { display: none; }
+  .controles button { padding: 8px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulso { animation: none; opacity: 0; }
+}
+</style>
+
+<div class="app">
+  <header class="cabecera">
+    <div>
+      <h1>Las campañas de Napoleón</h1>
+      <p>Por dónde pasaron Napoleón y sus ejércitos, de Córcega a Santa Elena, sobre un mapa con las fronteras de hoy.</p>
+    </div>
+    <div class="buscador" role="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="buscar" type="search" placeholder="Busca un lugar del libro: Eylau, Jena…" autocomplete="off" aria-label="Buscar un lugar" aria-controls="resultados">
+      <ul class="resultados" id="resultados" role="listbox" hidden></ul>
+    </div>
+  </header>
+
+  <nav class="campanas" id="campanas" aria-label="Campañas"></nav>
+
+  <main class="cuerpo">
+    <section class="mapa" aria-label="Mapa">
+      <svg id="mapa" role="img" aria-label="Mapa de Europa y el Mediterráneo con las rutas de Napoleón">
+        <g id="base">
+<!--MAPA_BASE-->
+        </g>
+        <g id="capa"></g>
+      </svg>
+      <div class="zoom">
+        <button type="button" id="acercar" aria-label="Acercar">+</button>
+        <button type="button" id="alejar" aria-label="Alejar">−</button>
+        <button type="button" id="encuadrar" aria-label="Encuadrar la campaña">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        </button>
+      </div>
+      <p class="ayuda">Arrastra para moverte · rueda o pellizca para ampliar</p>
+      <div class="globo" id="globo" hidden></div>
+    </section>
+
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </main>
+</div>
+
+<script>
+/*DATOS*/
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const svg = $("#mapa"), base = $("#base"), capa = $("#capa");
+  const panel = $("#panel"), globo = $("#globo");
+  const C = DATOS.campanas;
+  const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const RESULTADO = { v: "Victoria", d: "Derrota", i: "Indecisa" };
+  const TIPO = { batalla: "Batalla", asedio: "Asedio", tratado: "Tratado", paso: "Paso", ciudad: "Etapa" };
+
+  // Cada campaña: pasos (paradas con ficha) y ruta (paradas por las que pasó Napoleón, con puntos de paso).
+  for (const c of C) {
+    c.paradas.forEach((p, i) => (p.i = i));
+    c.pasos = c.paradas.filter((p) => p.t !== "via");
+    c.ruta = c.paradas.filter((p) => !p.sin);
+    const anclas = c.ruta.map((p, j) => [j, p.fuerza]).filter(([, f]) => f);
+    for (let a = 0; a < anclas.length - 1; a++) {
+      const [j0, f0] = anclas[a], [j1, f1] = anclas[a + 1];
+      for (let j = j0; j <= j1; j++) c.ruta[j].hombres = f0 + ((f1 - f0) * (j - j0)) / (j1 - j0);
+    }
+  }
+
+  const estado = { c: -1, p: 0, vista: { k: 1, x: 0, y: 0 }, encima: -1 };
+  let tam = { w: 1, h: 1 }, k0 = 1, reproduciendo = null, animacion = 0;
+
+  const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]));
+  const corto = (n) => n.replace(/\s*\(.*\)$/, "");
+  const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const res = (p) => (p.r ? p.r : "n");
+
+  // ---------- Vista: zoom y desplazamiento ----------
+  function medir() {
+    const r = svg.getBoundingClientRect();
+    tam = { w: Math.max(r.width, 1), h: Math.max(r.height, 1) };
+    k0 = Math.min(tam.w / DATOS.ancho, tam.h / DATOS.alto);
+  }
+  function limitar(v) {
+    const k = Math.min(Math.max(v.k, k0 * 0.9), k0 * 60);
+    const w = DATOS.ancho * k, h = DATOS.alto * k;
+    const x = Math.min(Math.max(v.x, tam.w * 0.5 - w), tam.w * 0.5);
+    const y = Math.min(Math.max(v.y, tam.h * 0.5 - h), tam.h * 0.5);
+    return { k, x, y };
+  }
+  function ponerVista(v) {
+    estado.vista = limitar(v);
+    const { k, x, y } = estado.vista;
+    base.setAttribute("transform", `translate(${x} ${y}) scale(${k})`);
+    dibujar();
+  }
+  function encuadre(caja, kMax = Infinity) {
+    const pad = Math.min(56, tam.w * 0.1, tam.h * 0.1);
+    const w = Math.max(caja[2] - caja[0], 1), h = Math.max(caja[3] - caja[1], 1);
+    const k = Math.min((tam.w - 2 * pad) / w, (tam.h - 2 * pad) / h, k0 * 14, kMax);
+    const cx = (caja[0] + caja[2]) / 2, cy = (caja[1] + caja[3]) / 2;
+    return { k, x: tam.w / 2 - cx * k, y: tam.h / 2 - cy * k };
+  }
+  function cajaDe(puntos) {
+    const xs = puntos.map((p) => p.mx), ys = puntos.map((p) => p.my);
+    return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+  }
+  function irA(destino, dur = 700) {
+    cancelAnimationFrame(animacion);
+    destino = limitar(destino);
+    if (reducido || dur === 0) return ponerVista(destino);
+    const a = estado.vista, t0 = performance.now();
+    const centro = (v) => [(tam.w / 2 - v.x) / v.k, (tam.h / 2 - v.y) / v.k];
+    const ca = centro(a), cb = centro(destino);
+    const fotograma = (t) => {
+      const u = Math.min(1, (t - t0) / dur);
+      const e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+      const k = Math.exp(Math.log(a.k) + (Math.log(destino.k) - Math.log(a.k)) * e);
+      const cx = ca[0] + (cb[0] - ca[0]) * e, cy = ca[1] + (cb[1] - ca[1]) * e;
+      ponerVista({ k, x: tam.w / 2 - cx * k, y: tam.h / 2 - cy * k });
+      if (u < 1) animacion = requestAnimationFrame(fotograma);
+    };
+    animacion = requestAnimationFrame(fotograma);
+  }
+  function zoomEn(f, px = tam.w / 2, py = tam.h / 2, dur = 0) {
+    const { k, x, y } = estado.vista;
+    const k2 = Math.min(Math.max(k * f, k0 * 0.9), k0 * 60);
+    const destino = { k: k2, x: px - ((px - x) * k2) / k, y: py - ((py - y) * k2) / k };
+    dur ? irA(destino, dur) : (cancelAnimationFrame(animacion), ponerVista(destino));
+  }
+  function encuadrarCampana(dur) {
+    if (estado.c < 0) return irA(encuadre(cajaDe(C.flatMap((c) => c.paradas.filter((p) => !p.fuera)))), dur);
+    irA(encuadre(cajaDe(C[estado.c].paradas.filter((p) => !p.fuera))), dur);
+  }
+  // Tras cambiar de paso, mueve la cámara solo si hace falta para ver la parada,
+  // la posición de Napoleón y la etapa anterior.
+  function seguir() {
+    const c = C[estado.c], p = c.pasos[estado.p];
+    const pts = [p, posicionNapoleon()];
+    const previa = c.ruta.filter((q) => q.i < p.i && q.t !== "via").pop();
+    if (previa && !p.sin) pts.push(previa);
+    const caja = cajaDe(pts);
+    const { k, x, y } = estado.vista, m = Math.min(60, tam.w * 0.12);
+    const dentro = caja[0] * k + x > m && caja[2] * k + x < tam.w - m && caja[1] * k + y > m && caja[3] * k + y < tam.h - m;
+    if (!dentro) irA(encuadre(caja, k));
+  }
+
+  // ---------- Dibujo de la capa de rutas y rótulos ----------
+  function posicionNapoleon() {
+    const c = C[estado.c], p = c.pasos[estado.p];
+    return c.ruta.filter((q) => q.i <= p.i).pop();
+  }
+  function forma(p, r) {
+    if (p.t === "tratado") return `<rect class="forma" x="${-r}" y="${-r}" width="${2 * r}" height="${2 * r}"/>`;
+    if (p.t === "asedio") return `<path class="forma" d="M0 ${-r * 1.3}L${r * 1.3} 0L0 ${r * 1.3}L${-r * 1.3} 0Z"/>`;
+    if (p.t === "paso") return `<path class="forma" d="M0 ${-r * 1.3}L${r * 1.2} ${r * 0.9}L${-r * 1.2} ${r * 0.9}Z"/>`;
+    if (p.t === "ciudad") return `<circle class="forma" r="${r * 0.75}"/>`;
+    return `<circle class="forma" r="${r}"/>`;
+  }
+  function anchoTexto(s, px) { return s.length * px * 0.53 + 4; }
+  function choca(a, ocupadas) {
+    return ocupadas.some((b) => a[0] < b[2] && a[2] > b[0] && a[1] < b[3] && a[3] > b[1]);
+  }
+  function colocar(cands, ocupadas) {
+    const out = [];
+    cands.sort((a, b) => a.prio - b.prio);
+    for (const c of cands) {
+      const w = anchoTexto(c.texto, c.px), h = c.px;
+      const opciones = c.centro
+        ? [[c.x - w / 2, c.y - h / 2]]
+        : [[c.x + c.d, c.y - h / 2], [c.x - c.d - w, c.y - h / 2], [c.x - w / 2, c.y - c.d - h], [c.x - w / 2, c.y + c.d]];
+      for (const [x, y] of opciones) {
+        const caja = [x - 2, y - 2, x + w + 2, y + h + 2];
+        if (caja[0] < 0 || caja[2] > tam.w || caja[1] < 0 || caja[3] > tam.h) continue;
+        if (!choca(caja, ocupadas)) { ocupadas.push(caja); out.push({ ...c, lx: x, ly: y + h * 0.8 }); break; }
+      }
+    }
+    return out;
+  }
+  function flecha(a, b, color) {
+    const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy);
+    if (L < 46) return "";
+    const ang = (Math.atan2(dy, dx) * 180) / Math.PI;
+    const mx = a[0] + dx * 0.55, my = a[1] + dy * 0.55;
+    return `<path class="flecha" d="M-5 -5L4 0L-5 5Z" transform="translate(${mx} ${my}) rotate(${ang})"${color ? ` style="fill:${color}"` : ""}/>`;
+  }
+
+  function dibujar() {
+    const { k, x, y } = estado.vista;
+    const P = (p) => [p.mx * k + x, p.my * k + y];
+    const nivel = k / k0;
+    const partes = [];
+    const ocupadas = [];
+    const rotulos = [];
+
+    if (estado.c < 0) {
+      C.forEach((c, ci) => {
+        const pts = c.ruta.filter((p) => !p.fuera).map(P);
+        const d = "M" + pts.map((q) => q.map((v) => v.toFixed(1)).join(" ")).join("L");
+        const cls = ci === estado.encima ? " encima" : "";
+        partes.push(`<path class="tramo todas${cls}" d="${d}" style="stroke-width:2.5"/><path class="tramo-toque" data-c="${ci}" d="${d}"/>`);
+      });
+      C.forEach((c) => c.pasos.forEach((p) => {
+        if (p.t !== "batalla" || p.sin) return;
+        const [px, py] = P(p);
+        partes.push(`<g class="marca ${res(p)}" transform="translate(${px.toFixed(1)} ${py.toFixed(1)})">${forma(p, 3.5)}</g>`);
+        ocupadas.push([px - 4, py - 4, px + 4, py + 4]);
+        rotulos.push({ texto: corto(p.n), x: px, y: py, d: 6, px: 12, prio: 2, cls: "r-parada" });
+      }));
+    } else {
+      const c = C[estado.c], actual = c.pasos[estado.p], nap = posicionNapoleon();
+      // Tramos de la ruta
+      for (let j = 1; j < c.ruta.length; j++) {
+        const a = c.ruta[j - 1], b = c.ruta[j];
+        const hecho = b.i <= actual.i;
+        const pa = P(a), pb = P(b);
+        let ancho = hecho ? 3 : 2;
+        if (hecho && a.hombres && b.hombres) ancho = Math.max(2.5, ((a.hombres + b.hombres) / 2 / 422000) * 26);
+        const cls = `tramo ${hecho ? "hecho" : "futuro"}${b.mar ? " mar" : ""}`;
+        partes.push(`<path class="${cls}" d="M${pa[0].toFixed(1)} ${pa[1].toFixed(1)}L${pb[0].toFixed(1)} ${pb[1].toFixed(1)}" style="stroke-width:${ancho.toFixed(1)}"/>`);
+        if (hecho) partes.push(flecha(pa, pb));
+      }
+      // Marcas
+      const orden = c.pasos.filter((p) => p !== actual).concat(actual);
+      for (const p of orden) {
+        const [px, py] = P(p);
+        const futura = p.i > actual.i;
+        const r = p === actual ? 6.5 : 5;
+        const paso = c.pasos.indexOf(p);
+        partes.push(`<g class="marca ${res(p)}${p.sin ? " sin" : ""}${futura ? " futura" : ""}" data-p="${paso}" transform="translate(${px.toFixed(1)} ${py.toFixed(1)})">${forma(p, r)}</g>`);
+        ocupadas.push([px - r, py - r, px + r, py + r]);
+        const prio = p === actual ? 0 : futura ? 4 : p.t === "batalla" || p.t === "tratado" || p.t === "asedio" ? 2 : 3;
+        rotulos.push({
+          texto: corto(p.n), x: px, y: py, d: r + 5, px: p === actual ? 15 : 13, prio: prio + (p.sin ? 0.5 : 0),
+          cls: `r-parada${p === actual ? " actual" : ""}${futura ? " futura" : ""}${p.sin ? " sin" : ""}`,
+        });
+      }
+      if (actual.sin) {
+        const [px, py] = P(actual);
+        partes.push(`<circle class="anillo" cx="${px}" cy="${py}" r="12" stroke-dasharray="3 3"/>`);
+      }
+      // Napoleón
+      const [nx, ny] = P(nap);
+      partes.push(`<g class="emperador" transform="translate(${nx.toFixed(1)} ${ny.toFixed(1)})"><circle class="pulso" r="12"/><circle r="12"/><text y="1">N</text></g>`);
+      ocupadas.unshift([nx - 13, ny - 13, nx + 13, ny + 13]);
+      rotulos.forEach((r) => { if (r.prio === 0) r.d = Math.max(r.d, nx === r.x && ny === r.y ? 16 : r.d); });
+    }
+
+    // Países y mares, por debajo de las paradas en prioridad
+    for (const p of DATOS.paises) {
+      if (nivel < p.z * 0.8) continue;
+      rotulos.push({ texto: p.n.toUpperCase(), x: p.x * k + x, y: p.y * k + y, px: 13, prio: 6 + p.z / 10, centro: true, cls: "r-pais", fondo: true });
+    }
+    for (const m of DATOS.mares) {
+      if (nivel < m.z * 0.8) continue;
+      rotulos.push({ texto: m.n, x: m.x * k + x, y: m.y * k + y, px: 13, prio: 7 + m.z / 10, centro: true, cls: "r-mar", fondo: true });
+    }
+    const puestos = colocar(rotulos, ocupadas);
+    const fondo = puestos.filter((r) => r.fondo).map((r) => `<text class="${r.cls}" x="${(r.lx + anchoTexto(r.texto, r.px) / 2).toFixed(1)}" y="${r.ly.toFixed(1)}">${esc(r.texto)}</text>`);
+    const frente = puestos.filter((r) => !r.fondo).map((r) => `<text class="${r.cls}" x="${r.lx.toFixed(1)}" y="${r.ly.toFixed(1)}">${esc(r.texto)}</text>`);
+    capa.innerHTML = fondo.join("") + partes.join("") + frente.join("");
+  }
+
+  // ---------- Panel ----------
+  function pintarCampanas() {
+    const botones = [`<button type="button" data-c="-1" aria-pressed="${estado.c < 0}"><small>1769–1821</small><span>Todas</span></button>`];
+    C.forEach((c, i) => botones.push(`<button type="button" data-c="${i}" aria-pressed="${estado.c === i}"><small>${c.anos}</small><span>${esc(c.nombre)}</span></button>`));
+    $("#campanas").innerHTML = botones.join("");
+    const activo = $("#campanas [aria-pressed=true]");
+    if (activo) activo.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }
+  const leyenda = (c) => `
+    <div class="leyenda">
+      <span><svg viewBox="-11 -7 22 14"><circle r="5" style="fill:var(--victoria);stroke:var(--halo)"/></svg>Victoria</span>
+      <span><svg viewBox="-11 -7 22 14"><circle r="5" style="fill:var(--derrota);stroke:var(--halo)"/></svg>Derrota</span>
+      <span><svg viewBox="-11 -7 22 14"><circle r="5" style="fill:var(--indecisa);stroke:var(--halo)"/></svg>Indecisa</span>
+      <span><svg viewBox="-11 -7 22 14"><path d="M0 -6.5L6.5 0L0 6.5L-6.5 0Z" style="fill:var(--tenue)"/></svg>Asedio</span>
+      <span><svg viewBox="-11 -7 22 14"><rect x="-5" y="-5" width="10" height="10" style="fill:var(--panel);stroke:var(--tinta);stroke-width:1.5"/></svg>Tratado</span>
+      <span><svg viewBox="-11 -7 22 14"><circle r="5" style="fill:var(--panel);stroke:var(--tenue);stroke-width:1.5;stroke-dasharray:2 2"/></svg>Sin Napoleón</span>
+      <span><svg viewBox="-11 -7 22 14"><path d="M-10 0H10" style="stroke:var(--ruta);stroke-width:3"/></svg>Por tierra</span>
+      <span><svg viewBox="-11 -7 22 14"><path d="M-10 0H10" style="stroke:var(--ruta);stroke-width:3;stroke-dasharray:1 5;stroke-linecap:round"/></svg>Por mar</span>
+      ${c && c.fuerza ? `<span class="nota">${esc(c.fuerza)}</span>` : ""}
+      <span class="nota">Fronteras y nombres actuales, para orientarse. Muchos de estos países no existían en la época.</span>
+    </div>`;
+
+  function pintarPanel() {
+    if (estado.c < 0) {
+      panel.innerHTML = `
+        <p class="intro">Elige una campaña para seguir paso a paso el recorrido, o busca arriba cualquier lugar que aparezca en el libro.</p>
+        <ul class="indice">${C.map((c, i) => `
+          <li><button type="button" data-c="${i}"><span class="anos">${c.anos}</span><strong>${esc(c.nombre)}</strong><p>${esc(c.resumen)}</p></button></li>`).join("")}
+        </ul>${leyenda()}`;
+      return;
+    }
+    const c = C[estado.c], p = c.pasos[estado.p];
+    const insignias = [];
+    if (p.r) insignias.push(`<span class="insignia ${p.r}">${TIPO[p.t]} · ${RESULTADO[p.r]}</span>`);
+    else insignias.push(`<span class="insignia">${TIPO[p.t]}</span>`);
+    if (p.sin) insignias.push(`<span class="insignia sin">Sin Napoleón</span>`);
+    const ultimo = estado.p === c.pasos.length - 1;
+    panel.innerHTML = `
+      <button type="button" class="volver" data-c="-1">← Todas las campañas</button>
+      <div class="campana-cab">
+        <span class="anos">${c.anos}</span>
+        <h2>${esc(c.nombre)}</h2>
+        <p>${esc(c.resumen)}</p>
+      </div>
+      <article class="tarjeta">
+        <h3>${esc(p.n)}</h3>
+        ${p.hoy ? `<p class="hoy"><b>Hoy</b>${esc(p.hoy)}</p>` : ""}
+        <div class="meta"><span class="fecha">${esc(p.f)}</span>${insignias.join("")}</div>
+        <p class="texto">${esc(p.x)}</p>
+      </article>
+      <div class="controles">
+        <button type="button" id="anterior" ${estado.p === 0 ? "disabled" : ""} aria-label="Paso anterior"><svg viewBox="0 0 16 16"><path d="M10.5 2 4 8l6.5 6z"/></svg><span class="etq">Anterior</span></button>
+        <button type="button" id="reproducir" class="reproducir">${reproduciendo
+          ? `<svg viewBox="0 0 16 16"><path d="M3 2h4v12H3zM9 2h4v12H9z"/></svg>Pausa`
+          : `<svg viewBox="0 0 16 16"><path d="M3 2l11 6-11 6z"/></svg>${ultimo ? "Repetir" : "Recorrer"}`}</button>
+        <button type="button" id="siguiente" ${ultimo ? "disabled" : ""} aria-label="Paso siguiente"><span class="etq">Siguiente</span><svg viewBox="0 0 16 16"><path d="M5.5 2 12 8l-6.5 6z"/></svg></button>
+        <span class="contador">${estado.p + 1} / ${c.pasos.length}</span>
+      </div>
+      <ol class="lista" id="lista">${c.pasos.map((q, j) => `
+        <li><button type="button" data-p="${j}" ${j === estado.p ? 'aria-current="step"' : ""}>
+          <span class="punto ${q.r || ""}${q.sin ? " sin" : ""}"></span><span class="f">${esc(q.f)}</span><span class="${q.sin ? "sin" : ""}">${esc(q.n)}</span>
+        </button></li>`).join("")}
+      </ol>${leyenda(c)}`;
+    const lista = $("#lista"), cur = lista.querySelector("[aria-current]");
+    if (cur && lista.scrollHeight > lista.clientHeight) {
+      const top = cur.offsetTop - lista.offsetTop;
+      if (top < lista.scrollTop || top + cur.offsetHeight > lista.scrollTop + lista.clientHeight)
+        lista.scrollTop = top - lista.clientHeight / 2;
+    }
+  }
+
+  // ---------- Acciones ----------
+  function guardar() {
+    try { localStorage.setItem("napoleon", JSON.stringify({ c: estado.c, p: estado.p })); } catch (e) {}
+    try { history.replaceState(null, "", estado.c < 0 ? location.pathname + location.search : "#" + C[estado.c].id); } catch (e) {}
+  }
+  function elegirCampana(i, paso = 0, dur) {
+    parar();
+    estado.c = i; estado.p = paso; estado.encima = -1;
+    globo.hidden = true;
+    pintarCampanas(); pintarPanel();
+    encuadrarCampana(dur);
+    if (i >= 0 && paso > 0) setTimeout(seguir, reducido ? 0 : 720);
+    guardar();
+  }
+  function irPaso(j) {
+    const c = C[estado.c];
+    estado.p = Math.max(0, Math.min(c.pasos.length - 1, j));
+    pintarPanel(); dibujar(); seguir(); guardar();
+  }
+  function parar() { clearInterval(reproduciendo); reproduciendo = null; }
+  function alternarReproduccion() {
+    if (reproduciendo) { parar(); pintarPanel(); return; }
+    const c = C[estado.c];
+    if (estado.p === c.pasos.length - 1) irPaso(0);
+    reproduciendo = setInterval(() => {
+      if (estado.p >= C[estado.c].pasos.length - 1) { parar(); pintarPanel(); return; }
+      irPaso(estado.p + 1);
+    }, 2600);
+    pintarPanel();
+  }
+
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.c !== undefined && !b.closest("#capa")) return elegirCampana(+b.dataset.c);
+    if (b.dataset.p !== undefined) { parar(); return irPaso(+b.dataset.p); }
+    if (b.id === "anterior") { parar(); irPaso(estado.p - 1); }
+    else if (b.id === "siguiente") { parar(); irPaso(estado.p + 1); }
+    else if (b.id === "reproducir") alternarReproduccion();
+    else if (b.id === "acercar") zoomEn(1.6, undefined, undefined, 250);
+    else if (b.id === "alejar") zoomEn(1 / 1.6, undefined, undefined, 250);
+    else if (b.id === "encuadrar") encuadrarCampana();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest("input") || estado.c < 0 || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === "ArrowRight") { parar(); irPaso(estado.p + 1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft") { parar(); irPaso(estado.p - 1); e.preventDefault(); }
+  });
+
+  // Arrastre, rueda y pellizco sobre el mapa
+  const punteros = new Map();
+  const local = (e) => { const r = svg.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  let arrastre = null, movido = 0;
+  svg.addEventListener("pointerdown", (e) => {
+    svg.setPointerCapture(e.pointerId);
+    punteros.set(e.pointerId, local(e));
+    cancelAnimationFrame(animacion);
+    movido = 0;
+    arrastre = { vista: { ...estado.vista }, pts: [...punteros.values()].map((p) => [...p]) };
+    svg.classList.add("arrastrando");
+  });
+  svg.addEventListener("pointermove", (e) => {
+    if (!punteros.has(e.pointerId)) {
+      if (estado.c < 0 && e.pointerType === "mouse") sobrevolar(e);
+      return;
+    }
+    punteros.set(e.pointerId, local(e));
+    const pts = [...punteros.values()], a = arrastre;
+    if (!a || pts.length !== a.pts.length) return;
+    if (pts.length === 1) {
+      const dx = pts[0][0] - a.pts[0][0], dy = pts[0][1] - a.pts[0][1];
+      movido = Math.max(movido, Math.hypot(dx, dy));
+      ponerVista({ k: a.vista.k, x: a.vista.x + dx, y: a.vista.y + dy });
+    } else {
+      const [p1, p2] = pts, [q1, q2] = a.pts;
+      const f = Math.hypot(p1[0] - p2[0], p1[1] - p2[1]) / Math.max(1, Math.hypot(q1[0] - q2[0], q1[1] - q2[1]));
+      const mq = [(q1[0] + q2[0]) / 2, (q1[1] + q2[1]) / 2], mp = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+      const k = a.vista.k * f;
+      movido = 99;
+      ponerVista({ k, x: mp[0] - ((mq[0] - a.vista.x) * k) / a.vista.k, y: mp[1] - ((mq[1] - a.vista.y) * k) / a.vista.k });
+    }
+  });
+  function soltar(e) {
+    if (!punteros.has(e.pointerId)) return;
+    punteros.delete(e.pointerId);
+    arrastre = punteros.size ? { vista: { ...estado.vista }, pts: [...punteros.values()].map((p) => [...p]) } : null;
+    if (!punteros.size) svg.classList.remove("arrastrando");
+    if (e.type === "pointerup" && movido < 6 && !punteros.size) tocar(e);
+  }
+  svg.addEventListener("pointerup", soltar);
+  svg.addEventListener("pointercancel", soltar);
+  svg.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const d = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+    zoomEn(Math.exp(-d * 0.0018), ...local(e));
+  }, { passive: false });
+  svg.addEventListener("dblclick", (e) => zoomEn(2, ...local(e), 300));
+  svg.addEventListener("pointerleave", () => { if (estado.c < 0) { estado.encima = -1; globo.hidden = true; dibujar(); } });
+
+  function objetivo(e) {
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    return el && el.closest("[data-p],[data-c]");
+  }
+  function tocar(e) {
+    const t = objetivo(e);
+    if (!t) return;
+    if (t.dataset.p !== undefined) { parar(); irPaso(+t.dataset.p); }
+    else if (t.dataset.c !== undefined) elegirCampana(+t.dataset.c);
+  }
+  function sobrevolar(e) {
+    const t = objetivo(e);
+    const ci = t && t.dataset.c !== undefined ? +t.dataset.c : -1;
+    if (ci !== estado.encima) { estado.encima = ci; dibujar(); }
+    if (ci < 0) { globo.hidden = true; return; }
+    globo.innerHTML = `${esc(C[ci].nombre)}<small>${C[ci].anos}</small>`;
+    globo.hidden = false;
+    const [mx, my] = local(e);
+    globo.style.left = Math.min(mx + 14, tam.w - globo.offsetWidth - 8) + "px";
+    globo.style.top = Math.max(8, my - 36) + "px";
+  }
+
+  // Buscador
+  const entrada = $("#buscar"), lista = $("#resultados");
+  const indice = C.flatMap((c, ci) => c.pasos.map((p, pj) => ({ c, ci, p, pj, clave: norm(p.n + " " + (p.hoy || "")) })));
+  let hallados = [], marcado = 0;
+  function buscar() {
+    const q = norm(entrada.value.trim());
+    if (!q) { lista.hidden = true; return; }
+    hallados = indice.filter((h) => h.clave.includes(q)).slice(0, 12);
+    marcado = 0;
+    lista.innerHTML = hallados.length
+      ? hallados.map((h, i) => `<li><button type="button" role="option" data-h="${i}" aria-selected="${i === 0}">${esc(h.p.n)}<small>${esc(h.p.f)} · ${esc(h.c.nombre)}${h.p.hoy ? " · hoy " + esc(h.p.hoy) : ""}</small></button></li>`).join("")
+      : `<li class="vacio">No está entre las paradas del mapa. Prueba con otra grafía (p. ej. «Ratisbona» o «Regensburg»).</li>`;
+    lista.hidden = false;
+  }
+  function abrir(i) {
+    const h = hallados[i];
+    if (!h) return;
+    entrada.value = ""; lista.hidden = true; entrada.blur();
+    if (estado.c === h.ci) { parar(); irPaso(h.pj); } else elegirCampana(h.ci, h.pj);
+  }
+  entrada.addEventListener("input", buscar);
+  entrada.addEventListener("keydown", (e) => {
+    if (lista.hidden) return;
+    if (e.key === "Enter") { abrir(marcado); e.preventDefault(); }
+    else if (e.key === "Escape") lista.hidden = true;
+    else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      marcado = (marcado + (e.key === "ArrowDown" ? 1 : -1) + hallados.length) % Math.max(1, hallados.length);
+      lista.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-selected", i === marcado));
+      e.preventDefault();
+    }
+  });
+  lista.addEventListener("pointerdown", (e) => e.preventDefault());
+  lista.addEventListener("click", (e) => { const b = e.target.closest("[data-h]"); if (b) abrir(+b.dataset.h); });
+  entrada.addEventListener("blur", () => setTimeout(() => (lista.hidden = true), 120));
+
+  // Arranque
+  let inicio = { c: -1, p: 0 };
+  try { const g = JSON.parse(localStorage.getItem("napoleon")); if (g && C[g.c]) inicio = { c: g.c, p: Math.min(g.p, C[g.c].pasos.length - 1) }; } catch (e) {}
+  const h = location.hash.slice(1), porHash = C.findIndex((c) => c.id === h);
+  if (porHash >= 0 && porHash !== inicio.c) inicio = { c: porHash, p: 0 };
+  medir();
+  ponerVista(encuadre([0, 0, DATOS.ancho, DATOS.alto]));
+  elegirCampana(inicio.c, inicio.p, 0);
+  new ResizeObserver(() => {
+    const antes = { ...tam };
+    medir();
+    if (Math.abs(antes.w - tam.w) > 1 || Math.abs(antes.h - tam.h) > 1) {
+      const { k, x, y } = estado.vista;
+      const cx = (antes.w / 2 - x) / k, cy = (antes.h / 2 - y) / k;
+      ponerVista({ k, x: tam.w / 2 - cx * k, y: tam.h / 2 - cy * k });
+    }
+  }).observe(svg);
+})();
+</script>
