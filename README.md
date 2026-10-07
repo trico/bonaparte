@@ -30,6 +30,7 @@ Los datos están en `data/campanas.json`. Cada parada tiene:
 | `mar` | `true` si a este punto se llega por mar |
 | `fuera` | `true` para no tenerla en cuenta al encuadrar la campaña (lugares muy alejados) |
 | `x` | Texto de la ficha |
+| `libro` | Si el dato viene de la biografía, el porcentaje de lectura donde aparece |
 
 Tras editar, regenera la página:
 

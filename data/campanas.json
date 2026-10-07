@@ -142,8 +142,16 @@
         "x": "Entra en Milán y restablece la República Cisalpina. Melas queda cortado de Austria." },
       { "n": "Montebello", "hoy": "Montebello della Battaglia, Italia", "lat": 45.001, "lon": 9.103, "f": "9 jun 1800", "t": "batalla", "r": "v", "sin": true,
         "x": "Lannes derrota a la vanguardia austriaca de Ott." },
+      { "n": "San Giuliano", "hoy": "San Giuliano Vecchio, Alessandria (Italia)", "lat": 44.885, "lon": 8.745, "f": "13 jun 1800", "t": "ciudad", "libro": "26 %",
+        "x": "Una hora después de llegar, Napoleón averigua que Melas parece prepararse para marchar hacia Génova y que ha abandonado la llanura. Convencido de que los austriacos se retiran, reparte sus fuerzas para cortarles el paso." },
+      { "n": "Valenza", "hoy": "Piamonte, Italia", "lat": 45.013, "lon": 8.644, "f": "13 jun 1800", "t": "ciudad", "sin": true, "libro": "26 %",
+        "x": "La división de Lapoype queda al norte del Po con la orden de tomar el vado de Valenza." },
+      { "n": "Novi", "hoy": "Novi Ligure, Piamonte (Italia)", "lat": 44.762, "lon": 8.787, "f": "13 jun 1800", "t": "ciudad", "sin": true, "libro": "26 %",
+        "x": "Desaix recibe la división de Boudet y marcha hacia Novi para adelantarse a Melas en el camino de Génova." },
+      { "n": "Marengo (toma de la aldea)", "hoy": "Spinetta Marengo, Alessandria (Italia)", "lat": 44.888, "lon": 8.676, "f": "13 jun 1800", "t": "batalla", "r": "v", "sin": true, "libro": "26 %",
+        "x": "Victor, al frente de la vanguardia, recibe la orden de tomar Marengo. A las 17 h el general Gardanne se topa allí con unos 3.000 austriacos y carga contra la aldea mientras Dampierre se acerca por el sur. Un fuerte chaparrón retrasa el ataque y desborda torrentes y ríos, pero los franceses toman el pueblo con dos cañones y unos 100 prisioneros. Los austriacos siguen disparando desde la otra orilla del Bormida hasta las 10 de la noche. No se ven fuegos de campamento y las patrullas no informan de nada inusual." },
       { "n": "Marengo", "hoy": "Spinetta Marengo, Alessandria (Italia)", "lat": 44.888, "lon": 8.676, "f": "14 jun 1800", "t": "batalla", "r": "v",
-        "x": "Batalla casi perdida a media tarde contra Melas. La llegada de Desaix, que muere en el contraataque, da la vuelta a la jornada. Austria evacúa el norte de Italia." },
+        "x": "Napoleón no esperaba el potente contraataque de Melas a través del Bormida. Batalla casi perdida a media tarde. La llegada de Desaix, que muere en el contraataque, da la vuelta a la jornada. Austria evacúa el norte de Italia." },
       { "n": "París (regreso)", "hoy": "Francia", "lat": 48.857, "lon": 2.352, "f": "2 jul 1800", "t": "ciudad",
         "x": "Vuelve a París convertido en el salvador de la República." }
     ]

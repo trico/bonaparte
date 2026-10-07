@@ -169,6 +169,7 @@ button { cursor: pointer; }
 .insignia.i { color: var(--indecisa); }
 .insignia.sin { border-style: dashed; }
 .tarjeta .texto { margin: 10px 0 0; }
+.tarjeta .fuente { margin: 8px 0 0; color: var(--tenue); font-size: 13px; font-style: italic; }
 
 .controles { display: flex; align-items: center; gap: 8px; }
 .controles button {
@@ -314,10 +315,10 @@ button { cursor: pointer; }
     base.setAttribute("transform", `translate(${x} ${y}) scale(${k})`);
     dibujar();
   }
-  function encuadre(caja, kMax = Infinity) {
+  function encuadre(caja, kMax = k0 * 14) {
     const pad = Math.min(56, tam.w * 0.1, tam.h * 0.1);
     const w = Math.max(caja[2] - caja[0], 1), h = Math.max(caja[3] - caja[1], 1);
-    const k = Math.min((tam.w - 2 * pad) / w, (tam.h - 2 * pad) / h, k0 * 14, kMax);
+    const k = Math.min((tam.w - 2 * pad) / w, (tam.h - 2 * pad) / h, kMax);
     const cx = (caja[0] + caja[2]) / 2, cy = (caja[1] + caja[3]) / 2;
     return { k, x: tam.w / 2 - cx * k, y: tam.h / 2 - cy * k };
   }
@@ -361,8 +362,15 @@ button { cursor: pointer; }
     if (previa && !p.sin) pts.push(previa);
     const caja = cajaDe(pts);
     const { k, x, y } = estado.vista, m = Math.min(60, tam.w * 0.12);
+    // Si hay varias paradas muy juntas (p. ej. los alrededores de una batalla), acerca la cámara.
+    const cerca = c.pasos.concat(pts).filter((q) => Math.hypot(q.mx - p.mx, q.my - p.my) < 12);
+    const local = cajaDe(cerca);
+    if (cerca.length > 2 && Math.max(local[2] - local[0], local[3] - local[1]) * k < 70) {
+      const cx = (local[0] + local[2]) / 2, cy = (local[1] + local[3]) / 2, r = Math.max(14, (local[2] - local[0]) / 2, (local[3] - local[1]) / 2);
+      return irA(encuadre([cx - r, cy - r, cx + r, cy + r], k0 * 50));
+    }
     const dentro = caja[0] * k + x > m && caja[2] * k + x < tam.w - m && caja[1] * k + y > m && caja[3] * k + y < tam.h - m;
-    if (!dentro) irA(encuadre(caja, k));
+    if (!dentro) irA(encuadre(caja, Math.min(k, k0 * 14)));
   }
 
   // ---------- Dibujo de la capa de rutas y rótulos ----------
@@ -530,6 +538,7 @@ button { cursor: pointer; }
         ${p.hoy ? `<p class="hoy"><b>Hoy</b>${esc(p.hoy)}</p>` : ""}
         <div class="meta"><span class="fecha">${esc(p.f)}</span>${insignias.join("")}</div>
         <p class="texto">${esc(p.x)}</p>
+        ${p.libro ? `<p class="fuente">Según tu libro · ${esc(p.libro)} de la lectura</p>` : ""}
       </article>
       <div class="controles">
         <button type="button" id="anterior" ${estado.p === 0 ? "disabled" : ""} aria-label="Paso anterior"><svg viewBox="0 0 16 16"><path d="M10.5 2 4 8l6.5 6z"/></svg><span class="etq">Anterior</span></button>
