@@ -23,6 +23,8 @@
   --halo: #f2f3ee;
   --rotulo-pais: #8f9384;
   --rotulo-mar: #6f8e9a;
+  --frances: #1e3a8f;
+  --austriaco: #b23a26;
   --sombra: 0 1px 2px rgba(29, 36, 48, .08), 0 4px 16px rgba(29, 36, 48, .08);
   --display: "IM Fell English SC", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --texto: "Alegreya Sans", "Gill Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -32,7 +34,7 @@
     --fondo: #111922; --panel: #16202b; --tinta: #e6e9ee; --tenue: #9ba4b3; --linea: #2a3542;
     --mar: #0c141d; --tierra: #1b2531; --costa: #4b5d6e; --frontera: #3a4757; --rio: #2c5970;
     --ruta: #e8bb4f; --ruta-futura: #7d6a3e; --victoria: #e8bb4f; --derrota: #ff7466; --indecisa: #a8b9cc;
-    --halo: #111922; --rotulo-pais: #6d7888; --rotulo-mar: #4f7487;
+    --halo: #111922; --rotulo-pais: #6d7888; --rotulo-mar: #4f7487; --frances: #6f9cff; --austriaco: #ff8a70;
     --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .35);
     color-scheme: dark;
   }
@@ -41,7 +43,7 @@
   --fondo: #111922; --panel: #16202b; --tinta: #e6e9ee; --tenue: #9ba4b3; --linea: #2a3542;
   --mar: #0c141d; --tierra: #1b2531; --costa: #4b5d6e; --frontera: #3a4757; --rio: #2c5970;
   --ruta: #e8bb4f; --ruta-futura: #7d6a3e; --victoria: #e8bb4f; --derrota: #ff7466; --indecisa: #a8b9cc;
-  --halo: #111922; --rotulo-pais: #6d7888; --rotulo-mar: #4f7487;
+  --halo: #111922; --rotulo-pais: #6d7888; --rotulo-mar: #4f7487; --frances: #6f9cff; --austriaco: #ff8a70;
   --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .35);
   color-scheme: dark;
 }
@@ -148,6 +150,48 @@ button { cursor: pointer; }
   background: var(--panel); border: 1px solid var(--linea); box-shadow: var(--sombra); white-space: nowrap;
 }
 .globo small { color: var(--tenue); margin-left: 6px; }
+
+/* Mapa táctico */
+#mapa.tactico .rios, #mapa.tactico .fronteras, #mapa.tactico .costa { display: none; }
+.t-rio { fill: none; stroke: var(--rio); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.t-arroyo { fill: none; stroke: var(--rio); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.t-camino { fill: none; stroke: var(--costa); stroke-width: 2; stroke-dasharray: 7 4; opacity: .8; }
+.t-agua { fill: var(--rotulo-mar); font: italic 13px var(--texto); letter-spacing: .06em; text-anchor: middle; paint-order: stroke; stroke: var(--tierra); stroke-width: 3px; }
+.t-lugar { fill: var(--tinta); stroke: var(--halo); stroke-width: 1.5; }
+.t-lugar-r { fill: var(--tenue); font: 13px var(--display); letter-spacing: .06em; paint-order: stroke; stroke: var(--tierra); stroke-width: 3px; }
+.t-lugar-r.ciudad { fill: var(--tinta); font-size: 15px; }
+.unidad rect { stroke: var(--halo); stroke-width: 1.5; }
+.unidad.fr rect, .mando.fr circle { fill: var(--frances); }
+.unidad.au rect, .mando.au circle { fill: var(--austriaco); }
+.unidad path { stroke: var(--halo); stroke-width: 1.5; fill: none; }
+.unidad circle { fill: var(--halo); }
+.mando circle { stroke: var(--halo); stroke-width: 2; }
+.mando text { fill: var(--halo); font: 14px var(--display); text-anchor: middle; dominant-baseline: central; }
+.unidad .capturado { stroke: var(--tinta); stroke-width: 2.5; stroke-linecap: round; }
+.t-unidad-r { font: 600 13px var(--texto); paint-order: stroke; stroke: var(--halo); stroke-width: 3.5px; stroke-linejoin: round; }
+.t-unidad-r.fr { fill: var(--frances); }
+.t-unidad-r.au { fill: var(--austriaco); }
+.t-flecha { fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+.t-flecha.fr { stroke: var(--frances); }
+.t-flecha.au { stroke: var(--austriaco); }
+.t-flecha.retirada { stroke-dasharray: 7 6; }
+.t-punta.fr { fill: var(--frances); }
+.t-punta.au { fill: var(--austriaco); }
+.t-flecha-r { fill: var(--tinta); font: italic 13px var(--texto); paint-order: stroke; stroke: var(--halo); stroke-width: 3.5px; }
+.t-fondo-r { fill: var(--halo); opacity: .85; }
+.t-marca { fill: var(--tinta); font: 700 13px var(--texto); paint-order: stroke; stroke: var(--halo); stroke-width: 3.5px; }
+.t-cruz { stroke: var(--tinta); stroke-width: 2.5; stroke-linecap: round; }
+
+.ver-tactico {
+  margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 8px;
+  border: 1px solid var(--ruta); background: none; color: var(--ruta); font-weight: 500;
+}
+.ver-tactico:hover { background: var(--fondo); }
+.ver-tactico svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+.fases { display: flex; flex-wrap: wrap; gap: 6px; }
+.fases button { padding: 4px 10px; border-radius: 999px; border: 1px solid var(--linea); background: var(--panel); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.fases button[aria-pressed="true"] { background: var(--ruta); border-color: var(--ruta); color: var(--panel); }
+.tarjeta .hora { color: var(--tenue); font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
 
 /* Panel */
 .panel { display: flex; flex-direction: column; gap: 14px; min-height: 0; overflow: hidden; }
@@ -288,7 +332,8 @@ button { cursor: pointer; }
     }
   }
 
-  const estado = { c: -1, p: 0, vista: { k: 1, x: 0, y: 0 }, encima: -1 };
+  const estado = { c: -1, p: 0, vista: { k: 1, x: 0, y: 0 }, encima: -1, t: null };
+  const kMax = () => (estado.t ? k0 * 3000 : k0 * 60);
   let tam = { w: 1, h: 1 }, k0 = 1, reproduciendo = null, animacion = 0;
 
   const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]));
@@ -303,7 +348,7 @@ button { cursor: pointer; }
     k0 = Math.min(tam.w / DATOS.ancho, tam.h / DATOS.alto);
   }
   function limitar(v) {
-    const k = Math.min(Math.max(v.k, k0 * 0.9), k0 * 60);
+    const k = Math.min(Math.max(v.k, k0 * 0.9), kMax());
     const w = DATOS.ancho * k, h = DATOS.alto * k;
     const x = Math.min(Math.max(v.x, tam.w * 0.5 - w), tam.w * 0.5);
     const y = Math.min(Math.max(v.y, tam.h * 0.5 - h), tam.h * 0.5);
@@ -345,11 +390,22 @@ button { cursor: pointer; }
   }
   function zoomEn(f, px = tam.w / 2, py = tam.h / 2, dur = 0) {
     const { k, x, y } = estado.vista;
-    const k2 = Math.min(Math.max(k * f, k0 * 0.9), k0 * 60);
+    const k2 = Math.min(Math.max(k * f, k0 * 0.9), kMax());
     const destino = { k: k2, x: px - ((px - x) * k2) / k, y: py - ((py - y) * k2) / k };
     dur ? irA(destino, dur) : (cancelAnimationFrame(animacion), ponerVista(destino));
   }
+  function cajaTactica(T) {
+    const pts = T.lugares.map((l) => l.p).concat(T.fases.flatMap((f) => f.u.map((u) => u.p)));
+    const xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
+    return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+  }
+  function cajaFase(F) {
+    const pts = F.u.map((u) => u.p).concat(F.f.flatMap((f) => f.p), (F.m || []).map((m) => m.p));
+    const xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
+    return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+  }
   function encuadrarCampana(dur) {
+    if (estado.t) return irA(encuadre(cajaTactica(DATOS.tacticos[estado.t.id]), kMax()), dur);
     if (estado.c < 0) return irA(encuadre(cajaDe(C.flatMap((c) => c.paradas.filter((p) => !p.fuera)))), dur);
     irA(encuadre(cajaDe(C[estado.c].paradas.filter((p) => !p.fuera))), dur);
   }
@@ -413,7 +469,68 @@ button { cursor: pointer; }
     return `<path class="flecha" d="M-5 -5L4 0L-5 5Z" transform="translate(${mx} ${my}) rotate(${ang})"${color ? ` style="fill:${color}"` : ""}/>`;
   }
 
+  function dibujarTactico() {
+    const { k, x, y } = estado.vista;
+    const T = DATOS.tacticos[estado.t.id], F = T.fases[estado.t.f];
+    const P = (q) => [q[0] * k + x, q[1] * k + y];
+    const linea = (pts) => "M" + pts.map((q) => P(q).map((v) => v.toFixed(1)).join(" ")).join("L");
+    const fondo = [], partes = [], ocupadas = [], rotulos = [];
+    for (const l of T.lineas) {
+      fondo.push(`<path class="t-${l.t}" d="${linea(l.p)}"/>`);
+      if (l.n && l.t !== "camino") {
+        const m = P(l.p[Math.floor(l.p.length / 2)]);
+        rotulos.push({ texto: l.n, x: m[0], y: m[1] + 16, px: 13, prio: 5, centro: true, cls: "t-agua", medio: true });
+      }
+    }
+    for (const l of T.lugares) {
+      const [px, py] = P(l.p);
+      const r = l.t === "ciudad" ? 7 : l.t === "pueblo" ? 5 : 3.5;
+      fondo.push(l.t === "pueblo" ? `<circle class="t-lugar" cx="${px}" cy="${py}" r="${r}"/>` : `<rect class="t-lugar" x="${px - r}" y="${py - r}" width="${2 * r}" height="${2 * r}"/>`);
+      ocupadas.push([px - r, py - r, px + r, py + r]);
+      rotulos.push({ texto: l.n, x: px, y: py, d: r + 4, px: l.t === "ciudad" ? 15 : 13, prio: 4, cls: `t-lugar-r ${l.t}` });
+    }
+    for (const fl of F.f) {
+      const pts = fl.p.map(P), a = pts[pts.length - 2], b = pts[pts.length - 1];
+      const ang = (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;
+      partes.push(`<path class="t-flecha ${fl.b}${fl.r ? " retirada" : ""}" d="${linea(fl.p)}"/>`);
+      partes.push(`<path class="t-punta ${fl.b}" d="M-6 -7L8 0L-6 7Z" transform="translate(${b[0].toFixed(1)} ${b[1].toFixed(1)}) rotate(${ang.toFixed(1)})"/>`);
+      if (fl.n) {
+        const m = pts[Math.floor(pts.length / 2)];
+        rotulos.push({ texto: fl.n, x: m[0], y: m[1], d: 8, px: 13, prio: 2, cls: "t-flecha-r" });
+      }
+    }
+    for (const u of F.u) {
+      const [px, py] = P(u.p);
+      if (u.t === "n") {
+        partes.push(`<g class="mando ${u.b}" transform="translate(${px.toFixed(1)} ${py.toFixed(1)})"><circle r="12"/><text y="1">${esc(u.n[0])}</text></g>`);
+        ocupadas.push([px - 13, py - 13, px + 13, py + 13]);
+        rotulos.push({ texto: u.n, x: px, y: py, d: 16, px: 13, prio: 1, cls: `t-unidad-r ${u.b}` });
+        continue;
+      }
+      const w = 30, h = 18, sx = -w / 2, sy = -h / 2;
+      const signo = u.t === "inf" ? `<path d="M${sx} ${sy}L${-sx} ${-sy}M${sx} ${-sy}L${-sx} ${sy}"/>`
+        : u.t === "cab" ? `<path d="M${sx} ${-sy}L${-sx} ${sy}"/>` : `<circle r="3.5"/>`;
+      const cruz = u.x ? `<path class="capturado" d="M-20 -14L20 14M-20 14L20 -14"/>` : "";
+      partes.push(`<g class="unidad ${u.b}" transform="translate(${px.toFixed(1)} ${py.toFixed(1)})"><rect x="${sx}" y="${sy}" width="${w}" height="${h}"/>${signo}${cruz}</g>`);
+      ocupadas.push([px - w / 2, py - h / 2, px + w / 2, py + h / 2]);
+      rotulos.push({ texto: u.n, x: px, y: py, d: w / 2 + 5, px: 13, prio: 1, cls: `t-unidad-r ${u.b}` });
+    }
+    for (const m of F.m || []) {
+      const [px, py] = P(m.p);
+      partes.push(`<path class="t-cruz" d="M${px - 6} ${py - 6}L${px + 6} ${py + 6}M${px - 6} ${py + 6}L${px + 6} ${py - 6}"/>`);
+      ocupadas.push([px - 7, py - 7, px + 7, py + 7]);
+      rotulos.push({ texto: m.n, x: px, y: py, d: 10, px: 13, prio: 1.5, cls: "t-marca" });
+    }
+    const puestos = colocar(rotulos, ocupadas);
+    const textos = puestos.map((r) => (r.cls.startsWith("t-lugar") || r.centro ? "" :
+      `<rect class="t-fondo-r" x="${(r.lx - 2).toFixed(1)}" y="${(r.ly - r.px * 0.85).toFixed(1)}" width="${(anchoTexto(r.texto, r.px) - 1).toFixed(1)}" height="${(r.px * 1.15).toFixed(1)}" rx="3"/>`) + (r.centro
+      ? `<text class="${r.cls}" x="${(r.lx + anchoTexto(r.texto, r.px) / 2).toFixed(1)}" y="${r.ly.toFixed(1)}">${esc(r.texto)}</text>`
+      : `<text class="${r.cls}" x="${r.lx.toFixed(1)}" y="${r.ly.toFixed(1)}">${esc(r.texto)}</text>`));
+    capa.innerHTML = fondo.join("") + partes.join("") + textos.join("");
+  }
+
   function dibujar() {
+    if (estado.t) return dibujarTactico();
     const { k, x, y } = estado.vista;
     const P = (p) => [p.mx * k + x, p.my * k + y];
     const nivel = k / k0;
@@ -511,7 +628,45 @@ button { cursor: pointer; }
       <span class="nota">Fronteras y nombres actuales, para orientarse. Muchos de estos países no existían en la época.</span>
     </div>`;
 
+  const leyendaTactica = (T) => `
+    <div class="leyenda">
+      <span><svg viewBox="-11 -7 22 14"><rect x="-10" y="-6" width="20" height="12" style="fill:var(--frances);stroke:var(--halo)"/></svg>Franceses</span>
+      <span><svg viewBox="-11 -7 22 14"><rect x="-10" y="-6" width="20" height="12" style="fill:var(--austriaco);stroke:var(--halo)"/></svg>Austriacos</span>
+      <span><svg viewBox="-11 -7 22 14"><rect x="-10" y="-6" width="20" height="12" style="fill:none;stroke:var(--tinta)"/><path d="M-10 -6L10 6M-10 6L10 -6" style="stroke:var(--tinta)"/></svg>Infantería</span>
+      <span><svg viewBox="-11 -7 22 14"><rect x="-10" y="-6" width="20" height="12" style="fill:none;stroke:var(--tinta)"/><path d="M-10 6L10 -6" style="stroke:var(--tinta)"/></svg>Caballería</span>
+      <span><svg viewBox="-11 -7 22 14"><rect x="-10" y="-6" width="20" height="12" style="fill:none;stroke:var(--tinta)"/><circle r="2.5" style="fill:var(--tinta)"/></svg>Artillería</span>
+      <span><svg viewBox="-11 -7 22 14"><path d="M-10 0H10" style="stroke:var(--tinta);stroke-width:3"/></svg>Avance</span>
+      <span><svg viewBox="-11 -7 22 14"><path d="M-10 0H10" style="stroke:var(--tinta);stroke-width:3;stroke-dasharray:5 4"/></svg>Retirada</span>
+      <span><svg viewBox="-11 -7 22 14"><path d="M-10 0H10" style="stroke:var(--rio);stroke-width:5"/></svg>Río</span>
+      <span class="nota">${esc(T.nota)}</span>
+    </div>`;
+
+  function pintarTactico() {
+    const T = DATOS.tacticos[estado.t.id], F = T.fases[estado.t.f], n = T.fases.length;
+    panel.innerHTML = `
+      <button type="button" class="volver" id="cerrar-tactico">← Volver a la campaña</button>
+      <div class="campana-cab">
+        <span class="anos">Mapa táctico · ${esc(T.fecha)}</span>
+        <h2>${esc(T.titulo)}</h2>
+      </div>
+      <div class="fases" role="group" aria-label="Fases de la batalla">${T.fases.map((f, i) =>
+        `<button type="button" data-fase="${i}" aria-pressed="${i === estado.t.f}">${esc(f.h)}</button>`).join("")}</div>
+      <article class="tarjeta">
+        <span class="hora">${esc(F.h)}</span>
+        <h3>${esc(F.titulo)}</h3>
+        <p class="texto">${esc(F.x)}</p>
+        ${F.libro ? `<p class="fuente">Según tu libro · ${esc(F.libro)} de la lectura</p>` : ""}
+      </article>
+      <div class="controles">
+        <button type="button" id="anterior" ${estado.t.f === 0 ? "disabled" : ""} aria-label="Fase anterior"><svg viewBox="0 0 16 16"><path d="M10.5 2 4 8l6.5 6z"/></svg><span class="etq">Anterior</span></button>
+        <button type="button" id="siguiente" ${estado.t.f === n - 1 ? "disabled" : ""} aria-label="Fase siguiente"><span class="etq">Siguiente</span><svg viewBox="0 0 16 16"><path d="M5.5 2 12 8l-6.5 6z"/></svg></button>
+        <span class="contador">Fase ${estado.t.f + 1} / ${n}</span>
+      </div>
+      ${leyendaTactica(T)}`;
+  }
+
   function pintarPanel() {
+    if (estado.t) return pintarTactico();
     if (estado.c < 0) {
       panel.innerHTML = `
         <p class="intro">Elige una campaña para seguir paso a paso el recorrido, o busca arriba cualquier lugar que aparezca en el libro.</p>
@@ -539,6 +694,7 @@ button { cursor: pointer; }
         <div class="meta"><span class="fecha">${esc(p.f)}</span>${insignias.join("")}</div>
         <p class="texto">${esc(p.x)}</p>
         ${p.libro ? `<p class="fuente">Según tu libro · ${esc(p.libro)} de la lectura</p>` : ""}
+        ${p.tactico ? `<button type="button" class="ver-tactico" data-tactico="${p.tactico}" data-fase="${p.fase || 0}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z M9 3v15 M15 6v15"/></svg>Ver mapa táctico de la batalla</button>` : ""}
       </article>
       <div class="controles">
         <button type="button" id="anterior" ${estado.p === 0 ? "disabled" : ""} aria-label="Paso anterior"><svg viewBox="0 0 16 16"><path d="M10.5 2 4 8l6.5 6z"/></svg><span class="etq">Anterior</span></button>
@@ -566,8 +722,34 @@ button { cursor: pointer; }
     try { localStorage.setItem("napoleon", JSON.stringify({ c: estado.c, p: estado.p })); } catch (e) {}
     try { history.replaceState(null, "", estado.c < 0 ? location.pathname + location.search : "#" + C[estado.c].id); } catch (e) {}
   }
+  function abrirTactico(id, fase) {
+    parar();
+    estado.t = { id, f: fase };
+    svg.classList.add("tactico");
+    pintarPanel();
+    irA(encuadre(cajaFase(DATOS.tacticos[id].fases[fase]), kMax()));
+  }
+  function ponerFase(f) {
+    const n = DATOS.tacticos[estado.t.id].fases.length;
+    estado.t.f = Math.max(0, Math.min(n - 1, f));
+    pintarPanel();
+    irA(encuadre(cajaFase(DATOS.tacticos[estado.t.id].fases[estado.t.f]), kMax()));
+  }
+  function quitarTactico() {
+    if (!estado.t) return false;
+    estado.t = null;
+    svg.classList.remove("tactico");
+    return true;
+  }
+  function cerrarTactico() {
+    quitarTactico();
+    pintarPanel();
+    encuadrarCampana();
+    setTimeout(seguir, reducido ? 0 : 720);
+  }
   function elegirCampana(i, paso = 0, dur) {
     parar();
+    quitarTactico();
     estado.c = i; estado.p = paso; estado.encima = -1;
     globo.hidden = true;
     pintarCampanas(); pintarPanel();
@@ -578,6 +760,7 @@ button { cursor: pointer; }
   function irPaso(j) {
     const c = C[estado.c];
     estado.p = Math.max(0, Math.min(c.pasos.length - 1, j));
+    if (quitarTactico()) { pintarPanel(); encuadrarCampana(); setTimeout(seguir, reducido ? 0 : 720); guardar(); return; }
     pintarPanel(); dibujar(); seguir(); guardar();
   }
   function parar() { clearInterval(reproduciendo); reproduciendo = null; }
@@ -595,6 +778,13 @@ button { cursor: pointer; }
   document.addEventListener("click", (e) => {
     const b = e.target.closest("button");
     if (!b) return;
+    if (b.dataset.tactico) return abrirTactico(b.dataset.tactico, +b.dataset.fase);
+    if (estado.t) {
+      if (b.dataset.fase !== undefined) return ponerFase(+b.dataset.fase);
+      if (b.id === "anterior") return ponerFase(estado.t.f - 1);
+      if (b.id === "siguiente") return ponerFase(estado.t.f + 1);
+      if (b.id === "cerrar-tactico") return cerrarTactico();
+    }
     if (b.dataset.c !== undefined && !b.closest("#capa")) return elegirCampana(+b.dataset.c);
     if (b.dataset.p !== undefined) { parar(); return irPaso(+b.dataset.p); }
     if (b.id === "anterior") { parar(); irPaso(estado.p - 1); }
@@ -607,6 +797,10 @@ button { cursor: pointer; }
 
   document.addEventListener("keydown", (e) => {
     if (e.target.closest("input") || estado.c < 0 || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (estado.t) {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") { ponerFase(estado.t.f + (e.key === "ArrowRight" ? 1 : -1)); e.preventDefault(); }
+      return;
+    }
     if (e.key === "ArrowRight") { parar(); irPaso(estado.p + 1); e.preventDefault(); }
     else if (e.key === "ArrowLeft") { parar(); irPaso(estado.p - 1); e.preventDefault(); }
   });

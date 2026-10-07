@@ -1,0 +1,195 @@
+{
+  "marengo": {
+    "titulo": "Batalla de Marengo",
+    "fecha": "13–14 jun 1800",
+    "nota": "Posiciones aproximadas, reconstruidas a partir de los relatos generales de la batalla. Sirven para entender los movimientos, no son un plano exacto. Las fases marcadas «según tu libro» salen de tus capturas.",
+    "lugares": [
+      { "n": "Alessandria", "t": "ciudad", "p": [44.913, 8.615] },
+      { "n": "Cabeza de puente", "t": "obra", "p": [44.905, 8.653] },
+      { "n": "Pedrabona", "t": "granja", "p": [44.896, 8.662] },
+      { "n": "Marengo", "t": "pueblo", "p": [44.887, 8.678] },
+      { "n": "Spinetta", "t": "pueblo", "p": [44.889, 8.694] },
+      { "n": "Castelceriolo", "t": "pueblo", "p": [44.915, 8.71] },
+      { "n": "Cascina Grossa", "t": "granja", "p": [44.888, 8.718] },
+      { "n": "San Giuliano", "t": "pueblo", "p": [44.886, 8.752] },
+      { "n": "La Stortigliona", "t": "granja", "p": [44.866, 8.661] },
+      { "n": "Frugarolo", "t": "pueblo", "p": [44.836, 8.683] },
+      { "n": "Torre Garofoli", "t": "granja", "p": [44.874, 8.808] }
+    ],
+    "lineas": [
+      { "n": "Tanaro", "t": "rio", "p": [[44.895, 8.575], [44.915, 8.595], [44.927, 8.622], [44.933, 8.648], [44.936, 8.672], [44.942, 8.7], [44.952, 8.73], [44.962, 8.76]] },
+      { "n": "Bormida", "t": "rio", "p": [[44.82, 8.672], [44.84, 8.668], [44.86, 8.656], [44.878, 8.651], [44.895, 8.648], [44.91, 8.65], [44.922, 8.658], [44.936, 8.672]] },
+      { "n": "Fontanone", "t": "arroyo", "p": [[44.852, 8.671], [44.866, 8.673], [44.88, 8.674], [44.89, 8.672], [44.902, 8.675], [44.914, 8.68], [44.928, 8.684]] },
+      { "n": "Camino de Tortona", "t": "camino", "p": [[44.913, 8.615], [44.909, 8.635], [44.905, 8.653], [44.896, 8.662], [44.887, 8.678], [44.889, 8.694], [44.888, 8.718], [44.886, 8.752], [44.88, 8.785], [44.874, 8.808], [44.872, 8.83]] },
+      { "n": "", "t": "camino", "p": [[44.905, 8.653], [44.91, 8.675], [44.915, 8.71], [44.93, 8.725]] },
+      { "n": "", "t": "camino", "p": [[44.887, 8.678], [44.866, 8.661], [44.836, 8.683]] }
+    ],
+    "fases": [
+      {
+        "h": "13 jun · 17 h",
+        "titulo": "Los franceses toman Marengo",
+        "libro": "26 %",
+        "x": "Napoleón llega a San Giuliano y cree que Melas se retira hacia Génova. Separa a Lapoype hacia el vado de Valenza y a Desaix, con la división de Boudet, hacia Novi. Victor recibe la orden de tomar Marengo: Gardanne carga contra la aldea, defendida por unos 3.000 austriacos, mientras Dampierre se acerca por el sur. Bajo un fuerte chaparrón toma el pueblo con dos cañones y unos 100 prisioneros. Los cañones austriacos disparan desde la otra orilla del Bormida hasta las 10 de la noche.",
+        "u": [
+          { "n": "Gardanne", "b": "fr", "t": "inf", "p": [44.889, 8.684] },
+          { "n": "Dampierre", "b": "fr", "t": "inf", "p": [44.874, 8.684] },
+          { "n": "Napoleón", "b": "fr", "t": "n", "p": [44.886, 8.752] },
+          { "n": "Retaguardia austriaca", "b": "au", "t": "inf", "p": [44.902, 8.655] },
+          { "n": "Baterías austriacas", "b": "au", "t": "art", "p": [44.9, 8.643] }
+        ],
+        "f": [
+          { "b": "fr", "p": [[44.887, 8.735], [44.888, 8.715], [44.889, 8.69]] },
+          { "b": "fr", "p": [[44.862, 8.71], [44.872, 8.69]] },
+          { "b": "au", "r": true, "p": [[44.887, 8.676], [44.896, 8.663], [44.901, 8.657]] },
+          { "b": "fr", "n": "Lapoype → Valenza", "p": [[44.89, 8.755], [44.915, 8.76], [44.94, 8.765]] },
+          { "b": "fr", "n": "Desaix → Novi", "p": [[44.884, 8.758], [44.86, 8.775], [44.835, 8.79]] }
+        ]
+      },
+      {
+        "h": "14 jun · 8–9 h",
+        "titulo": "Melas cruza el Bormida",
+        "x": "Al amanecer, los austriacos salen de la cabeza de puente. El grueso, con Haddik en cabeza y Kaim detrás, avanza por el camino de Marengo; O'Reilly se desvía hacia el sur. Ott espera su turno para cruzar. Gardanne, adelantado en la granja de Pedrabona, recibe el primer golpe. Napoleón, que ha pasado la noche en Torre Garofoli, cree que es solo una acción de retaguardia.",
+        "u": [
+          { "n": "Gardanne", "b": "fr", "t": "inf", "p": [44.897, 8.667] },
+          { "n": "Chambarlhac", "b": "fr", "t": "inf", "p": [44.884, 8.68] },
+          { "n": "Kellermann", "b": "fr", "t": "cab", "p": [44.872, 8.686] },
+          { "n": "Lannes (Watrin)", "b": "fr", "t": "inf", "p": [44.889, 8.74] },
+          { "n": "Napoleón", "b": "fr", "t": "n", "p": [44.874, 8.808] },
+          { "n": "Haddik", "b": "au", "t": "inf", "p": [44.9, 8.658] },
+          { "n": "Kaim", "b": "au", "t": "inf", "p": [44.905, 8.646] },
+          { "n": "O'Reilly", "b": "au", "t": "inf", "p": [44.882, 8.656] },
+          { "n": "Ott", "b": "au", "t": "inf", "p": [44.912, 8.633] }
+        ],
+        "f": [
+          { "b": "au", "p": [[44.905, 8.653], [44.9, 8.658]] },
+          { "b": "au", "p": [[44.903, 8.655], [44.89, 8.66], [44.876, 8.661]] }
+        ]
+      },
+      {
+        "h": "10–12 h",
+        "titulo": "La línea del Fontanone",
+        "x": "Gardanne se repliega tras el Fontanone, un arroyo encajonado delante de Marengo, donde Victor se hace fuerte. Los ataques de Haddik fracasan y él mismo cae herido de muerte; después ataca Kaim. Lannes llega para cubrir la derecha de Victor y Kellermann frena por el sur a O'Reilly. Napoleón comprende por fin que es una batalla en toda regla y manda llamar a Desaix: «Creía atacar a Melas y es él quien me ha atacado. Volved, si aún podéis».",
+        "u": [
+          { "n": "Gardanne", "b": "fr", "t": "inf", "p": [44.896, 8.68] },
+          { "n": "Chambarlhac", "b": "fr", "t": "inf", "p": [44.882, 8.68] },
+          { "n": "Lannes (Watrin)", "b": "fr", "t": "inf", "p": [44.905, 8.692] },
+          { "n": "Kellermann", "b": "fr", "t": "cab", "p": [44.869, 8.679] },
+          { "n": "Napoleón", "b": "fr", "t": "n", "p": [44.89, 8.71] },
+          { "n": "Haddik", "b": "au", "t": "inf", "p": [44.895, 8.666] },
+          { "n": "Kaim", "b": "au", "t": "inf", "p": [44.886, 8.664] },
+          { "n": "O'Reilly", "b": "au", "t": "inf", "p": [44.866, 8.665] },
+          { "n": "Ott", "b": "au", "t": "inf", "p": [44.908, 8.66] }
+        ],
+        "f": [
+          { "b": "fr", "r": true, "p": [[44.897, 8.667], [44.896, 8.677]] },
+          { "b": "au", "p": [[44.895, 8.666], [44.894, 8.673]] },
+          { "b": "fr", "p": [[44.889, 8.74], [44.9, 8.71], [44.905, 8.695]] },
+          { "b": "fr", "p": [[44.874, 8.808], [44.89, 8.715]] }
+        ]
+      },
+      {
+        "h": "13–14 h",
+        "titulo": "Ott rodea la derecha francesa",
+        "x": "Ott cruza por fin y sube hacia Castelceriolo, por detrás del flanco derecho francés. Napoleón lanza allí la división de Monnier, recién llegada (la brigada de Carra Saint-Cyr toma Castelceriolo), y la infantería de la Guardia Consular, unos 800 hombres. En el centro, los granaderos de Lattermann cruzan el Fontanone y Marengo acaba cayendo.",
+        "u": [
+          { "n": "Victor", "b": "fr", "t": "inf", "p": [44.887, 8.688] },
+          { "n": "Lannes", "b": "fr", "t": "inf", "p": [44.901, 8.697] },
+          { "n": "Monnier", "b": "fr", "t": "inf", "p": [44.913, 8.716] },
+          { "n": "Guardia Consular", "b": "fr", "t": "inf", "p": [44.906, 8.708] },
+          { "n": "Napoleón", "b": "fr", "t": "n", "p": [44.892, 8.718] },
+          { "n": "Ott", "b": "au", "t": "inf", "p": [44.914, 8.695] },
+          { "n": "Lattermann", "b": "au", "t": "inf", "p": [44.889, 8.678] },
+          { "n": "Kaim", "b": "au", "t": "inf", "p": [44.897, 8.674] },
+          { "n": "O'Reilly", "b": "au", "t": "inf", "p": [44.872, 8.674] }
+        ],
+        "f": [
+          { "b": "au", "p": [[44.908, 8.66], [44.913, 8.68], [44.914, 8.693]] },
+          { "b": "au", "p": [[44.889, 8.666], [44.889, 8.676]] },
+          { "b": "fr", "p": [[44.888, 8.745], [44.905, 8.73], [44.912, 8.717]] },
+          { "b": "fr", "p": [[44.89, 8.735], [44.905, 8.71]] }
+        ]
+      },
+      {
+        "h": "15–16 h",
+        "titulo": "La retirada francesa",
+        "x": "Desbordados por el norte y el centro, los franceses se retiran hacia San Giuliano, en orden pero con grandes pérdidas. La Guardia Consular, formada en cuadro, aguanta varias cargas antes de retirarse. Melas, convencido de haber ganado y levemente herido, deja el mando a su jefe de estado mayor, Zach, y vuelve a Alessandria. Zach forma una columna para perseguir a los franceses por el camino de Tortona.",
+        "u": [
+          { "n": "Victor", "b": "fr", "t": "inf", "p": [44.885, 8.727] },
+          { "n": "Lannes", "b": "fr", "t": "inf", "p": [44.895, 8.733] },
+          { "n": "Guardia Consular", "b": "fr", "t": "inf", "p": [44.902, 8.72] },
+          { "n": "Monnier", "b": "fr", "t": "inf", "p": [44.906, 8.742] },
+          { "n": "Napoleón", "b": "fr", "t": "n", "p": [44.888, 8.748] },
+          { "n": "Zach", "b": "au", "t": "inf", "p": [44.888, 8.703] },
+          { "n": "Ott", "b": "au", "t": "inf", "p": [44.909, 8.72] },
+          { "n": "O'Reilly", "b": "au", "t": "inf", "p": [44.872, 8.7] },
+          { "n": "Melas", "b": "au", "t": "n", "p": [44.913, 8.62] }
+        ],
+        "f": [
+          { "b": "fr", "r": true, "p": [[44.887, 8.69], [44.886, 8.72]] },
+          { "b": "fr", "r": true, "p": [[44.901, 8.697], [44.896, 8.728]] },
+          { "b": "fr", "r": true, "p": [[44.913, 8.716], [44.907, 8.737]] },
+          { "b": "au", "p": [[44.889, 8.686], [44.888, 8.7]] },
+          { "b": "au", "p": [[44.914, 8.705], [44.91, 8.716]] },
+          { "b": "au", "n": "Melas vuelve a Alessandria", "p": [[44.89, 8.682], [44.904, 8.652], [44.912, 8.625]] }
+        ]
+      },
+      {
+        "h": "17 h",
+        "titulo": "Llega Desaix",
+        "x": "Desaix, que había oído el cañoneo, vuelve con la división de Boudet y se coloca en el camino, delante de San Giuliano. Según la tradición dijo: «Esta batalla está perdida, pero aún hay tiempo de ganar otra». Marmont reúne los cañones que quedan, unos 18, y Kellermann esconde su caballería entre los viñedos, en el flanco de la columna de Zach, que avanza confiada por el camino.",
+        "u": [
+          { "n": "Desaix (Boudet)", "b": "fr", "t": "inf", "p": [44.887, 8.735] },
+          { "n": "Marmont (18 cañones)", "b": "fr", "t": "art", "p": [44.882, 8.729] },
+          { "n": "Kellermann", "b": "fr", "t": "cab", "p": [44.877, 8.733] },
+          { "n": "Victor y Lannes", "b": "fr", "t": "inf", "p": [44.896, 8.743] },
+          { "n": "Monnier", "b": "fr", "t": "inf", "p": [44.905, 8.748] },
+          { "n": "Napoleón", "b": "fr", "t": "n", "p": [44.89, 8.752] },
+          { "n": "Zach", "b": "au", "t": "inf", "p": [44.888, 8.716] },
+          { "n": "Ott", "b": "au", "t": "inf", "p": [44.905, 8.725] },
+          { "n": "O'Reilly", "b": "au", "t": "inf", "p": [44.873, 8.712] }
+        ],
+        "f": [
+          { "b": "fr", "p": [[44.85, 8.79], [44.872, 8.76], [44.886, 8.739]] },
+          { "b": "au", "p": [[44.888, 8.703], [44.888, 8.714]] }
+        ]
+      },
+      {
+        "h": "18 h",
+        "titulo": "El contraataque",
+        "x": "La batería de Marmont dispara a quemarropa sobre la columna austriaca y la división de Boudet ataca. Desaix cae muerto de un balazo casi al empezar. Estalla un carro de munición austriaco y, en ese momento, Kellermann carga por sorpresa contra el flanco de los granaderos: la columna se deshace y Zach es capturado con unos 2.000 hombres. Toda la línea francesa pasa al ataque y los austriacos huyen hacia los puentes del Bormida.",
+        "u": [
+          { "n": "Boudet", "b": "fr", "t": "inf", "p": [44.887, 8.726] },
+          { "n": "Marmont", "b": "fr", "t": "art", "p": [44.882, 8.729] },
+          { "n": "Kellermann", "b": "fr", "t": "cab", "p": [44.879, 8.709] },
+          { "n": "Victor y Lannes", "b": "fr", "t": "inf", "p": [44.898, 8.722] },
+          { "n": "Monnier", "b": "fr", "t": "inf", "p": [44.908, 8.725] },
+          { "n": "Napoleón", "b": "fr", "t": "n", "p": [44.89, 8.74] },
+          { "n": "Zach (capturado)", "b": "au", "t": "inf", "p": [44.889, 8.71], "x": true },
+          { "n": "Ott", "b": "au", "t": "inf", "p": [44.908, 8.705] },
+          { "n": "O'Reilly", "b": "au", "t": "inf", "p": [44.872, 8.695] }
+        ],
+        "m": [{ "n": "Muere Desaix", "p": [44.884, 8.731] }],
+        "f": [
+          { "b": "fr", "p": [[44.887, 8.738], [44.887, 8.73]] },
+          { "b": "fr", "p": [[44.874, 8.73], [44.875, 8.715], [44.877, 8.711]] },
+          { "b": "fr", "p": [[44.9, 8.743], [44.9, 8.727]] },
+          { "b": "au", "r": true, "p": [[44.89, 8.704], [44.89, 8.69], [44.889, 8.68]] },
+          { "b": "au", "r": true, "p": [[44.908, 8.7], [44.906, 8.675], [44.906, 8.658]] }
+        ]
+      },
+      {
+        "h": "Noche y 15 jun",
+        "titulo": "Victoria y Convención de Alessandria",
+        "x": "Al anochecer los austriacos han vuelto a cruzar el Bormida. Han perdido unos 9.000 hombres entre muertos, heridos y prisioneros; los franceses, unos 6.000 (las cifras varían según la fuente). Al día siguiente Melas firma la Convención de Alessandria: entrega las fortalezas y evacúa el norte de Italia hasta el río Mincio. Napoleón hará de Marengo uno de los pilares de su leyenda.",
+        "u": [
+          { "n": "Ejército francés", "b": "fr", "t": "inf", "p": [44.889, 8.684] },
+          { "n": "Napoleón", "b": "fr", "t": "n", "p": [44.889, 8.71] },
+          { "n": "Ejército austriaco", "b": "au", "t": "inf", "p": [44.908, 8.638] }
+        ],
+        "f": [
+          { "b": "au", "r": true, "p": [[44.903, 8.657], [44.908, 8.642]] }
+        ]
+      }
+    ]
+  }
+}

@@ -65,6 +65,19 @@ const mares = [
   ["Mar Adriático", 43.0, 15.2, 3], ["Mar Tirreno", 40.0, 11.8, 3], ["Golfo de Vizcaya", 45.4, -4.6, 3],
   ["Canal de la Mancha", 50.1, -2.0, 4],
 ];
+// Mapas tácticos: coordenadas [lat, lon] proyectadas sin redondear (el campo de batalla mide pocos km).
+const tacticos = JSON.parse(await readFile("data/tacticos.json", "utf8"));
+const precisa = ([lat, lon]) => proyeccion([lon, lat]).map((v) => Math.round(v * 1e4) / 1e4);
+for (const t of Object.values(tacticos)) {
+  for (const l of t.lugares) l.p = precisa(l.p);
+  for (const l of t.lineas) l.p = l.p.map(precisa);
+  for (const f of t.fases) {
+    for (const u of f.u) u.p = precisa(u.p);
+    for (const m of f.m || []) m.p = precisa(m.p);
+    for (const fl of f.f) fl.p = fl.p.map(precisa);
+  }
+}
+
 const rotulo = ([n, lat, lon, z]) => {
   const [x, y] = proyectar(lon, lat);
   return { n, x, y, z };
@@ -76,6 +89,7 @@ const datos = {
   paises: etiquetas.map(rotulo),
   mares: mares.map(rotulo),
   campanas,
+  tacticos,
 };
 
 const mapaBase = [

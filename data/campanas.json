@@ -148,9 +148,9 @@
         "x": "La división de Lapoype queda al norte del Po con la orden de tomar el vado de Valenza." },
       { "n": "Novi", "hoy": "Novi Ligure, Piamonte (Italia)", "lat": 44.762, "lon": 8.787, "f": "13 jun 1800", "t": "ciudad", "sin": true, "libro": "26 %",
         "x": "Desaix recibe la división de Boudet y marcha hacia Novi para adelantarse a Melas en el camino de Génova." },
-      { "n": "Marengo (toma de la aldea)", "hoy": "Spinetta Marengo, Alessandria (Italia)", "lat": 44.888, "lon": 8.676, "f": "13 jun 1800", "t": "batalla", "r": "v", "sin": true, "libro": "26 %",
+      { "n": "Marengo (toma de la aldea)", "hoy": "Spinetta Marengo, Alessandria (Italia)", "lat": 44.888, "lon": 8.676, "f": "13 jun 1800", "t": "batalla", "r": "v", "sin": true, "libro": "26 %", "tactico": "marengo", "fase": 0,
         "x": "Victor, al frente de la vanguardia, recibe la orden de tomar Marengo. A las 17 h el general Gardanne se topa allí con unos 3.000 austriacos y carga contra la aldea mientras Dampierre se acerca por el sur. Un fuerte chaparrón retrasa el ataque y desborda torrentes y ríos, pero los franceses toman el pueblo con dos cañones y unos 100 prisioneros. Los austriacos siguen disparando desde la otra orilla del Bormida hasta las 10 de la noche. No se ven fuegos de campamento y las patrullas no informan de nada inusual." },
-      { "n": "Marengo", "hoy": "Spinetta Marengo, Alessandria (Italia)", "lat": 44.888, "lon": 8.676, "f": "14 jun 1800", "t": "batalla", "r": "v",
+      { "n": "Marengo", "hoy": "Spinetta Marengo, Alessandria (Italia)", "lat": 44.888, "lon": 8.676, "f": "14 jun 1800", "t": "batalla", "r": "v", "tactico": "marengo", "fase": 1,
         "x": "Napoleón no esperaba el potente contraataque de Melas a través del Bormida. Batalla casi perdida a media tarde. La llegada de Desaix, que muere en el contraataque, da la vuelta a la jornada. Austria evacúa el norte de Italia." },
       { "n": "París (regreso)", "hoy": "Francia", "lat": 48.857, "lon": 2.352, "f": "2 jul 1800", "t": "ciudad",
         "x": "Vuelve a París convertido en el salvador de la República." }
