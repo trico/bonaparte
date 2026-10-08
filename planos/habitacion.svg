@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="1120" viewBox="-95 -85 410 560" font-family="Helvetica, Arial, sans-serif">
+  <!-- Unidades: 1 = 1 cm. Origen en la esquina interior superior izquierda. -->
+  <defs>
+    <clipPath id="interior">
+      <polygon points="0,0 196,0 196,18 258,18 258,387 241,387 241,407 0,407"/>
+    </clipPath>
+    <marker id="a" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <style>
+    .dim { stroke:#333; stroke-width:.6; marker-start:url(#a); marker-end:url(#a); }
+    .ext { stroke:#999; stroke-width:.4; }
+    .t   { font-size:8px; fill:#222; text-anchor:middle; }
+    .est { fill:#b85c00; }
+    .lbl { font-size:9px; fill:#1d4f91; text-anchor:middle; font-weight:bold; }
+  </style>
+
+  <rect x="-95" y="-85" width="410" height="560" fill="#fff"/>
+
+  <!-- Título -->
+  <text x="129" y="-68" class="t" style="font-size:11px;font-weight:bold">Plano de la habitación (cotas en cm)</text>
+
+  <!-- Muros (gris) con interior en blanco -->
+  <rect x="-10" y="-10" width="278" height="427" fill="#555"/>
+  <polygon points="0,0 196,0 196,18 258,18 258,387 241,387 241,407 0,407" fill="#fff"/>
+
+  <!-- Cuadrícula de 50 cm para colocar muebles -->
+  <g clip-path="url(#interior)" stroke="#e3e3e3" stroke-width=".4">
+    <line x1="50" y1="0" x2="50" y2="407"/><line x1="100" y1="0" x2="100" y2="407"/>
+    <line x1="150" y1="0" x2="150" y2="407"/><line x1="200" y1="0" x2="200" y2="407"/>
+    <line x1="250" y1="0" x2="250" y2="407"/>
+    <line x1="0" y1="50" x2="258" y2="50"/><line x1="0" y1="100" x2="258" y2="100"/>
+    <line x1="0" y1="150" x2="258" y2="150"/><line x1="0" y1="200" x2="258" y2="200"/>
+    <line x1="0" y1="250" x2="258" y2="250"/><line x1="0" y1="300" x2="258" y2="300"/>
+    <line x1="0" y1="350" x2="258" y2="350"/><line x1="0" y1="400" x2="258" y2="400"/>
+  </g>
+
+  <!-- Ventana balcón (pared superior), de x=20 a x≈130 -->
+  <rect x="20" y="-10" width="110" height="10" fill="#fff"/>
+  <g stroke="#1d4f91" stroke-width=".6" fill="none">
+    <rect x="20" y="-10" width="110" height="10"/>
+    <line x1="20" y1="-5" x2="130" y2="-5"/>
+  </g>
+  <text x="75" y="14" class="lbl">Ventana balcón</text>
+
+  <!-- Puerta (pared inferior), de x=63 a x≈153 -->
+  <rect x="63" y="407" width="90" height="10" fill="#fff"/>
+  <g stroke="#1d4f91" stroke-width=".6" fill="none">
+    <line x1="63" y1="407" x2="63" y2="417"/>
+    <line x1="153" y1="407" x2="153" y2="417"/>
+    <rect x="63" y="409.5" width="90" height="5"/>
+  </g>
+  <text x="108" y="398" class="lbl">Puerta</text>
+
+  <!-- Etiquetas de los resaltes -->
+  <text x="227" y="31" class="t" style="font-size:6px;fill:#666">resalte 62 × 18</text>
+  <text x="225" y="401" class="t" style="font-size:6px;fill:#666;text-anchor:end">resalte 17 × 20</text>
+
+  <!-- ===== COTAS ===== -->
+  <!-- Ancho total (arriba) -->
+  <line class="ext" x1="0" y1="-12" x2="0" y2="-52"/><line class="ext" x1="258" y1="6" x2="258" y2="-52"/>
+  <line class="dim" x1="0" y1="-48" x2="258" y2="-48"/>
+  <text x="129" y="-51" class="t">258</text>
+
+  <!-- Pared superior: 20 | ventana | ... | 62 -->
+  <line class="ext" x1="20" y1="-12" x2="20" y2="-32"/><line class="ext" x1="130" y1="-12" x2="130" y2="-32"/>
+  <line class="ext" x1="196" y1="-12" x2="196" y2="-32"/>
+  <line class="dim" x1="0" y1="-28" x2="20" y2="-28"/><text x="10" y="-31" class="t">20</text>
+  <line class="dim" x1="20" y1="-28" x2="130" y2="-28"/><text x="75" y="-31" class="t est">≈110 ?</text>
+  <line class="dim" x1="196" y1="-28" x2="258" y2="-28"/><text x="227" y="-31" class="t">62</text>
+
+  <!-- Fondo total (izquierda) -->
+  <line class="ext" x1="-12" y1="0" x2="-52" y2="0"/><line class="ext" x1="-12" y1="407" x2="-52" y2="407"/>
+  <line class="dim" x1="-45" y1="0" x2="-45" y2="407"/>
+  <text x="-49" y="203.5" class="t" transform="rotate(-90 -49 203.5)">407</text>
+
+  <!-- Lado derecho: 18 | 369 | 20 -->
+  <line class="ext" x1="262" y1="18" x2="300" y2="18"/><line class="ext" x1="268" y1="0" x2="300" y2="0"/>
+  <line class="ext" x1="268" y1="387" x2="300" y2="387"/><line class="ext" x1="268" y1="407" x2="300" y2="407"/>
+  <line class="dim" x1="290" y1="0" x2="290" y2="18"/><text x="298" y="12" class="t">18</text>
+  <line class="dim" x1="290" y1="18" x2="290" y2="387"/>
+  <text x="296" y="202" class="t" transform="rotate(-90 296 202)">369</text>
+  <line class="dim" x1="290" y1="387" x2="290" y2="407"/><text x="298" y="400" class="t">20</text>
+
+  <!-- Pared inferior: 63 | puerta | ... | 17 -->
+  <line class="ext" x1="0" y1="419" x2="0" y2="442"/><line class="ext" x1="63" y1="419" x2="63" y2="442"/>
+  <line class="ext" x1="153" y1="419" x2="153" y2="442"/>
+  <line class="ext" x1="241" y1="419" x2="241" y2="442"/><line class="ext" x1="258" y1="389" x2="258" y2="442"/>
+  <line class="dim" x1="0" y1="436" x2="63" y2="436"/><text x="31.5" y="448" class="t">63</text>
+  <line class="dim" x1="63" y1="436" x2="153" y2="436"/><text x="108" y="448" class="t est">≈90 ?</text>
+  <line class="dim" x1="241" y1="436" x2="258" y2="436"/><text x="249.5" y="448" class="t">17</text>
+
+  <!-- Leyenda -->
+  <text x="-85" y="466" style="font-size:6.5px;fill:#555">Cuadrícula interior: 50 × 50 cm · Cotas en naranja con «?» = estimadas, pendientes de medir.</text>
+</svg>
