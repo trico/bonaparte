@@ -1,0 +1,430 @@
+<title>Amueblar la habitación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: plano a escala a la izquierda, catálogo y ficha del mueble a la derecha; en móvil, apilado. */
+:root {
+  --bg: #f3f4f1;
+  --paper: #ffffff;
+  --fg: #1f2421;
+  --muted: #6b726d;
+  --line: #d9dcd6;
+  --grid: #eceee9;
+  --wall: #3b403d;
+  --accent: #2f5d8a;
+  --wood: #ead9bd;
+  --wood-edge: #8a6a3b;
+  --sel: #2f5d8a;
+  --warn: #c0392b;
+  --warn-fill: #f6d5d1;
+  --swing: rgba(47, 93, 138, .10);
+  --font-body: "Work Sans", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161917; --paper: #1f2320; --fg: #e7eae5; --muted: #9aa29c; --line: #343a36; --grid: #2a2f2b;
+    --wall: #aab1ab; --accent: #7fb0e0; --wood: #5a4a33; --wood-edge: #c9a671; --sel: #7fb0e0;
+    --warn: #ff7b6b; --warn-fill: #5a2a25; --swing: rgba(127, 176, 224, .14); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161917; --paper: #1f2320; --fg: #e7eae5; --muted: #9aa29c; --line: #343a36; --grid: #2a2f2b;
+  --wall: #aab1ab; --accent: #7fb0e0; --wood: #5a4a33; --wood-edge: #c9a671; --sel: #7fb0e0;
+  --warn: #ff7b6b; --warn-fill: #5a2a25; --swing: rgba(127, 176, 224, .14); color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 14px; }
+.app { display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: auto minmax(0, 1fr); height: 100%; padding-inline: 16px; padding-block: 12px; gap: 12px 16px; box-sizing: border-box; }
+header { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+h1 { font-size: 20px; margin: 0; font-weight: 700; letter-spacing: -.01em; text-wrap: balance; }
+.sub { color: var(--muted); font-size: 13px; }
+.status { margin-left: auto; font-family: var(--font-mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.status.ok { color: var(--accent); border-color: var(--accent); }
+.stage { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; min-height: 0; display: flex; }
+.stage svg { width: 100%; height: 100%; touch-action: none; user-select: none; display: block; }
+aside { display: flex; flex-direction: column; gap: 16px; min-height: 0; overflow-y: auto; padding-bottom: 8px; }
+section h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+.catalog { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.catalog button { text-align: left; display: flex; flex-direction: column; gap: 1px; }
+.catalog small { font-family: var(--font-mono); color: var(--muted); font-size: 11px; }
+button { font: inherit; color: var(--fg); background: var(--paper); border: 1px solid var(--line); border-radius: 5px; padding: 7px 9px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+button.danger { color: var(--warn); }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+label { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--muted); }
+input, select { font: inherit; font-family: var(--font-mono); font-size: 13px; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 5px 7px; width: 100%; box-sizing: border-box; }
+input[type=text] { font-family: var(--font-body); }
+.row { display: flex; flex-wrap: wrap; gap: 6px; }
+.warnmsg { color: var(--warn); font-size: 12px; }
+.hint { color: var(--muted); font-size: 12px; line-height: 1.45; margin: 0; }
+.list { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+.list button { border: none; background: none; padding: 4px 6px; display: flex; justify-content: space-between; gap: 8px; border-radius: 4px; }
+.list button.on { background: var(--bg); color: var(--accent); font-weight: 600; }
+.list span:last-child { font-family: var(--font-mono); color: var(--muted); font-size: 12px; }
+.dimtxt { font-family: var(--font-mono); fill: var(--muted); font-size: 7px; }
+.est { fill: var(--warn); }
+.itemlabel { font-family: var(--font-body); font-size: 6.5px; font-weight: 600; fill: var(--fg); pointer-events: none; }
+.itemdim { font-family: var(--font-mono); font-size: 5.5px; fill: var(--muted); pointer-events: none; }
+.item { cursor: grab; }
+.item.dragging { cursor: grabbing; }
+@media (max-width: 760px) {
+  html, body { height: auto; }
+  .app { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; height: auto; }
+  .stage { height: 70vh; }
+  aside { overflow: visible; }
+}
+</style>
+
+<div class="app">
+  <header>
+    <h1>Amueblar la habitación</h1>
+    <span class="sub">258 × 407 cm · arrastra los muebles · rejilla de 50 cm</span>
+    <span class="status" id="status">Cargando…</span>
+  </header>
+
+  <div class="stage"><svg id="plan" viewBox="-34 -40 330 490" aria-label="Plano de la habitación"></svg></div>
+
+  <aside>
+    <section>
+      <h2>Añadir mueble</h2>
+      <div class="catalog" id="catalog"></div>
+    </section>
+
+    <section>
+      <h2>Mueble seleccionado</h2>
+      <div class="panel" id="detail"></div>
+    </section>
+
+    <section>
+      <h2>En la habitación</h2>
+      <div class="list" id="list"></div>
+    </section>
+
+    <section>
+      <h2>Puerta y ventana</h2>
+      <div class="panel">
+        <div class="fields">
+          <label for="doorW">Ancho puerta (cm)<input id="doorW" type="number" min="60" max="120" step="1"></label>
+          <label for="doorHinge">Bisagra<select id="doorHinge"><option value="right">Derecha</option><option value="left">Izquierda</option></select></label>
+          <label for="winW">Ancho ventana (cm)<input id="winW" type="number" min="40" max="170" step="1"></label>
+        </div>
+        <p class="hint">La puerta empieza a 63 cm de la esquina y la ventana a 20 cm. Los anchos de puerta y ventana están estimados hasta que los midas. La zona azul es el barrido de la puerta: déjala libre.</p>
+      </div>
+    </section>
+  </aside>
+</div>
+
+<script>
+(() => {
+  const W = 258, D = 407, SNAP = 5;
+  const PILLAR = { x: 196, y: 0, w: 62, h: 18 };
+  const NOTCH = { x: 241, y: 387, w: 17, h: 20 };
+  const DOOR_X = 63, WIN_X = 20;
+
+  const CATALOG = [
+    { name: "Armario", w: 100, h: 60 }, { name: "Armario", w: 150, h: 60 },
+    { name: "Armario", w: 200, h: 60 }, { name: "Cama", w: 90, h: 190 },
+    { name: "Cama", w: 135, h: 190 },   { name: "Cama", w: 150, h: 190 },
+    { name: "Mesita", w: 45, h: 40 },   { name: "Escritorio", w: 120, h: 60 },
+    { name: "Silla", w: 45, h: 45 },    { name: "Cómoda", w: 100, h: 50 },
+    { name: "Estantería", w: 80, h: 30 }, { name: "Sillón", w: 80, h: 80 },
+    { name: "Mueble a medida", w: 60, h: 40 }
+  ];
+
+  const EXAMPLE = {
+    example: true,
+    doorW: 90, doorHinge: "right", winW: 110,
+    items: [
+      { id: "e1", name: "Cama", w: 135, h: 190, x: 0, y: 100 },
+      { id: "e2", name: "Mesita", w: 45, h: 40, x: 0, y: 60 },
+      { id: "e3", name: "Armario", w: 60, h: 150, x: 198, y: 140 },
+      { id: "e4", name: "Escritorio", w: 120, h: 60, x: 0, y: 0 }
+    ]
+  };
+
+  let state = JSON.parse(JSON.stringify(EXAMPLE));
+  let selected = null;
+  let db = null, docRef = null, saveTimer = null;
+  const LS_KEY = "amueblar-habitacion-v1";
+
+  const $ = id => document.getElementById(id);
+  const svg = $("plan");
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs = {}, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+  const snap = v => Math.round(v / SNAP) * SNAP;
+  const uid = () => Math.random().toString(36).slice(2, 9);
+
+  // ---------- Conflictos ----------
+  const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+  function doorSwing() {
+    const r = state.doorW;
+    const hx = state.doorHinge === "right" ? DOOR_X + r : DOOR_X;
+    return { hx, hy: D, r };
+  }
+  function hitsSwing(it) {
+    const { hx, hy, r } = doorSwing();
+    const cx = Math.max(it.x, Math.min(hx, it.x + it.w));
+    const cy = Math.max(it.y, Math.min(hy, it.y + it.h));
+    return (cx - hx) ** 2 + (cy - hy) ** 2 < r * r - 1;
+  }
+  function problems(it) {
+    const p = [];
+    if (it.x < 0 || it.y < 0 || it.x + it.w > W || it.y + it.h > D) p.push("se sale de la habitación");
+    if (overlap(it, PILLAR)) p.push("choca con el saliente de arriba");
+    if (overlap(it, NOTCH)) p.push("choca con el saliente de abajo");
+    if (hitsSwing(it)) p.push("tapa el barrido de la puerta");
+    for (const o of state.items) if (o !== it && overlap(it, o)) { p.push("se solapa con " + o.name.toLowerCase()); break; }
+    return p;
+  }
+
+  // ---------- Dibujo ----------
+  function draw() {
+    svg.textContent = "";
+    const css = getComputedStyle(document.documentElement);
+    const v = n => css.getPropertyValue(n).trim();
+
+    // Muros
+    el("rect", { x: -10, y: -10, width: W + 20, height: D + 20, fill: v("--wall") }, svg);
+    el("polygon", { points: `0,0 196,0 196,18 258,18 258,387 241,387 241,407 0,407`, fill: v("--paper") }, svg);
+
+    // Rejilla 50 cm
+    const g = el("g", { stroke: v("--grid"), "stroke-width": .6 }, svg);
+    for (let x = 50; x < W; x += 50) el("line", { x1: x, y1: 0, x2: x, y2: D }, g);
+    for (let y = 50; y < D; y += 50) el("line", { x1: 0, y1: y, x2: W, y2: y }, g);
+    el("polygon", { points: `196,0 258,0 258,18 196,18`, fill: v("--wall") }, svg);
+    el("polygon", { points: `241,387 258,387 258,407 241,407`, fill: v("--wall") }, svg);
+
+    // Ventana
+    el("rect", { x: WIN_X, y: -10, width: state.winW, height: 10, fill: v("--paper"), stroke: v("--accent"), "stroke-width": .7 }, svg);
+    el("line", { x1: WIN_X, y1: -5, x2: WIN_X + state.winW, y2: -5, stroke: v("--accent"), "stroke-width": .7 }, svg);
+
+    // Puerta: hueco, barrido y hoja abierta
+    const { hx, hy, r } = doorSwing();
+    el("rect", { x: DOOR_X, y: D, width: r, height: 10, fill: v("--paper") }, svg);
+    const far = state.doorHinge === "right" ? DOOR_X : DOOR_X + r;
+    const sweep = state.doorHinge === "right" ? 1 : 0;
+    el("path", { d: `M${hx},${hy} L${far},${hy} A${r},${r} 0 0 ${sweep} ${hx},${hy - r} Z`, fill: v("--swing") }, svg);
+    el("path", { d: `M${far},${hy} A${r},${r} 0 0 ${sweep} ${hx},${hy - r}`, fill: "none", stroke: v("--accent"), "stroke-width": .6, "stroke-dasharray": "3 2" }, svg);
+    el("line", { x1: hx, y1: hy, x2: hx, y2: hy - r, stroke: v("--accent"), "stroke-width": 1.6 }, svg);
+
+    // Cotas
+    const t = (x, y, s, cls = "dimtxt", rot) => {
+      const n = el("text", { x, y, class: cls, "text-anchor": "middle" }, svg);
+      if (rot) n.setAttribute("transform", `rotate(-90 ${x} ${y})`);
+      n.textContent = s;
+    };
+    t(W / 2, -24, "258");
+    t(WIN_X + state.winW / 2, -14, "ventana ≈" + state.winW);
+    t(227, -14, "62");
+    t(-20, D / 2, "407", "dimtxt", true);
+    t(DOOR_X + r / 2, D + 22, "puerta ≈" + r);
+    t(DOOR_X / 2, D + 22, "63");
+    t(249.5, D + 22, "17");
+
+    // Muebles
+    for (const it of state.items) {
+      const bad = problems(it).length > 0;
+      const isSel = it.id === selected;
+      const grp = el("g", { class: "item", "data-id": it.id, tabindex: 0, role: "button", "aria-label": `${it.name} ${it.w} por ${it.h}` }, svg);
+      el("rect", {
+        x: it.x, y: it.y, width: it.w, height: it.h, rx: 1.5,
+        fill: bad ? v("--warn-fill") : v("--wood"),
+        stroke: isSel ? v("--sel") : (bad ? v("--warn") : v("--wood-edge")),
+        "stroke-width": isSel ? 1.6 : .8
+      }, grp);
+      const vertical = it.h > it.w * 1.3 && it.w < 70;
+      const cx = it.x + it.w / 2, cy = it.y + it.h / 2;
+      const lab = el("text", { x: cx, y: cy - 1, class: "itemlabel", "text-anchor": "middle" }, grp);
+      lab.textContent = it.name;
+      const dim = el("text", { x: cx, y: cy + 6.5, class: "itemdim", "text-anchor": "middle" }, grp);
+      dim.textContent = `${it.w}×${it.h}`;
+      if (vertical) { lab.setAttribute("transform", `rotate(-90 ${cx} ${cy})`); dim.setAttribute("transform", `rotate(-90 ${cx} ${cy})`); }
+    }
+
+    // Distancias del seleccionado a las paredes
+    const s = state.items.find(i => i.id === selected);
+    if (s) {
+      const accent = v("--accent");
+      const guide = (x1, y1, x2, y2, val, tx, ty) => {
+        if (val <= 0) return;
+        el("line", { x1, y1, x2, y2, stroke: accent, "stroke-width": .5, "stroke-dasharray": "2 1.5" }, svg);
+        const n = el("text", { x: tx, y: ty, class: "dimtxt", "text-anchor": "middle", style: `fill:${accent};font-size:6px` }, svg);
+        n.textContent = val;
+      };
+      const my = s.y + s.h / 2, mx = s.x + s.w / 2;
+      guide(0, my, s.x, my, s.x, s.x / 2, my - 2);
+      guide(s.x + s.w, my, W, my, W - s.x - s.w, (s.x + s.w + W) / 2, my - 2);
+      guide(mx, 0, mx, s.y, s.y, mx + 7, s.y / 2 + 2);
+      guide(mx, s.y + s.h, mx, D, D - s.y - s.h, mx + 7, (s.y + s.h + D) / 2 + 2);
+    }
+  }
+
+  function renderSide() {
+    // Ficha
+    const d = $("detail");
+    const s = state.items.find(i => i.id === selected);
+    if (!s) {
+      d.innerHTML = `<p class="hint">Toca un mueble del plano para moverlo, girarlo o cambiar sus medidas. Las líneas azules muestran la distancia a cada pared.</p>`;
+    } else {
+      const probs = problems(s);
+      d.innerHTML = `
+        <label for="fName">Nombre<input id="fName" type="text" value=""></label>
+        <div class="fields">
+          <label for="fW">Ancho (cm)<input id="fW" type="number" min="5" step="1" value="${s.w}"></label>
+          <label for="fH">Fondo (cm)<input id="fH" type="number" min="5" step="1" value="${s.h}"></label>
+          <label for="fX">Desde la izquierda<input id="fX" type="number" step="1" value="${s.x}"></label>
+          <label for="fY">Desde arriba<input id="fY" type="number" step="1" value="${s.y}"></label>
+        </div>
+        ${probs.length ? `<div class="warnmsg">Atención: ${probs.join(", ")}.</div>` : ""}
+        <div class="row">
+          <button id="bRot">Girar 90°</button>
+          <button id="bDup">Duplicar</button>
+          <button id="bDel" class="danger">Quitar</button>
+        </div>`;
+      $("fName").value = s.name;
+      const num = (id, key) => $(id).addEventListener("change", e => {
+        const n = Math.round(Number(e.target.value));
+        if (!Number.isFinite(n)) return;
+        s[key] = (key === "w" || key === "h") ? Math.max(5, n) : n;
+        changed();
+      });
+      num("fW", "w"); num("fH", "h"); num("fX", "x"); num("fY", "y");
+      $("fName").addEventListener("change", e => { s.name = e.target.value.trim() || "Mueble"; changed(); });
+      $("bRot").onclick = () => {
+        const cx = s.x + s.w / 2, cy = s.y + s.h / 2;
+        [s.w, s.h] = [s.h, s.w];
+        s.x = snap(cx - s.w / 2); s.y = snap(cy - s.h / 2);
+        changed();
+      };
+      $("bDup").onclick = () => {
+        const c = { ...s, id: uid(), x: s.x + 10, y: s.y + 10 };
+        state.items.push(c); selected = c.id; changed();
+      };
+      $("bDel").onclick = () => { state.items = state.items.filter(i => i !== s); selected = null; changed(); };
+    }
+
+    // Lista
+    const l = $("list");
+    l.textContent = "";
+    if (!state.items.length) l.innerHTML = `<p class="hint">Aún no hay muebles. Añade uno desde el catálogo.</p>`;
+    for (const it of state.items) {
+      const b = document.createElement("button");
+      b.className = it.id === selected ? "on" : "";
+      const a = document.createElement("span"); a.textContent = (problems(it).length ? "⚠ " : "") + it.name;
+      const c = document.createElement("span"); c.textContent = `${it.w}×${it.h}`;
+      b.append(a, c);
+      b.onclick = () => { selected = it.id; render(); };
+      l.appendChild(b);
+    }
+
+    $("doorW").value = state.doorW;
+    $("doorHinge").value = state.doorHinge;
+    $("winW").value = state.winW;
+  }
+
+  function render() { draw(); renderSide(); }
+
+  // ---------- Catálogo ----------
+  for (const c of CATALOG) {
+    const b = document.createElement("button");
+    b.innerHTML = `<span></span><small>${c.w} × ${c.h} cm</small>`;
+    b.firstChild.textContent = c.name;
+    b.onclick = () => {
+      const it = { id: uid(), name: c.name, w: c.w, h: c.h, x: snap((W - c.w) / 2), y: snap((D - c.h) / 2 - 40) };
+      state.items.push(it); selected = it.id; changed();
+    };
+    $("catalog").appendChild(b);
+  }
+
+  $("doorW").addEventListener("change", e => { const n = Math.round(+e.target.value); if (n >= 50 && n <= 150) { state.doorW = n; changed(); } });
+  $("winW").addEventListener("change", e => { const n = Math.round(+e.target.value); if (n >= 20 && n <= 170) { state.winW = n; changed(); } });
+  $("doorHinge").addEventListener("change", e => { state.doorHinge = e.target.value; changed(); });
+
+  // ---------- Arrastrar ----------
+  let drag = null;
+  const toCm = e => {
+    const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+    return p.matrixTransform(svg.getScreenCTM().inverse());
+  };
+  svg.addEventListener("pointerdown", e => {
+    const g = e.target.closest(".item");
+    if (!g) { if (selected) { selected = null; render(); } return; }
+    const it = state.items.find(i => i.id === g.dataset.id);
+    const p = toCm(e);
+    drag = { it, dx: p.x - it.x, dy: p.y - it.y, moved: false };
+    selected = it.id;
+    svg.setPointerCapture(e.pointerId);
+    render();
+  });
+  svg.addEventListener("pointermove", e => {
+    if (!drag) return;
+    const p = toCm(e);
+    const nx = snap(p.x - drag.dx), ny = snap(p.y - drag.dy);
+    if (nx !== drag.it.x || ny !== drag.it.y) { drag.it.x = nx; drag.it.y = ny; drag.moved = true; draw(); }
+  });
+  const end = () => { if (drag) { const m = drag.moved; drag = null; if (m) changed(); } };
+  svg.addEventListener("pointerup", end);
+  svg.addEventListener("pointercancel", end);
+
+  document.addEventListener("keydown", e => {
+    const s = state.items.find(i => i.id === selected);
+    if (!s || /INPUT|SELECT/.test(document.activeElement?.tagName)) return;
+    const step = e.shiftKey ? 1 : SNAP;
+    const k = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+    if (k) { s.x += k[0]; s.y += k[1]; e.preventDefault(); changed(); }
+    else if (e.key === "Delete" || e.key === "Backspace") { state.items = state.items.filter(i => i !== s); selected = null; changed(); }
+  });
+
+  // ---------- Guardar ----------
+  const setStatus = (txt, ok) => { const s = $("status"); s.textContent = txt; s.classList.toggle("ok", !!ok); };
+  function changed() {
+    state.example = false;
+    render();
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+    if (!docRef) { setStatus("Guardado en este navegador"); return; }
+    setStatus("Guardando…");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async () => {
+      try { await docRef.set({ layout: JSON.stringify(state) }); setStatus("Guardado", true); }
+      catch { setStatus("No se pudo guardar; queda en este navegador"); }
+    }, 700);
+  }
+  function load(obj) {
+    if (!obj || !Array.isArray(obj.items)) return false;
+    state = { ...EXAMPLE, ...obj };
+    return true;
+  }
+
+  try { load(JSON.parse(localStorage.getItem(LS_KEY))); } catch {}
+  render();
+  setStatus(state.example ? "Ejemplo: mueve o quita lo que quieras" : "Guardado en este navegador");
+
+  (async () => {
+    try {
+      db = window.claude?.use ? await window.claude.use("db") : null;
+      if (!db) return;
+      docRef = db.doc("planos/habitacion");
+      const snapDoc = await docRef.get();
+      if (snapDoc.exists) {
+        try { if (load(JSON.parse(snapDoc.data().layout))) { render(); } } catch {}
+        setStatus("Guardado", true);
+      } else if (!state.example) {
+        changed();
+      } else {
+        setStatus("Ejemplo: mueve o quita lo que quieras");
+      }
+    } catch { docRef = null; }
+  })();
+
+  matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>
